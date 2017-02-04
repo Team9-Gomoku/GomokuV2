@@ -14,7 +14,6 @@ public class GridView extends View {
     private int cellWidth, cellHeight;
     private Paint blackPaint = new Paint();
     private Paint greyPaint = new Paint();
-    private Paint blackPen = new Paint();
     private String[][] cellChecked;
 
     //Player 1 (WHITE) , if activePlayer = 0
@@ -29,12 +28,11 @@ public class GridView extends View {
         super(context, attrs);
         blackPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         greyPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        blackPen.setStyle(Paint.Style.STROKE);
         greyPaint.setColor(Color.GRAY);
     }
 
     public void setNumColumns(int numColumns) {
-        this.numColumns = numColumns + 1;
+        this.numColumns = numColumns;
         calculateDimensions();
     }
 
@@ -43,7 +41,7 @@ public class GridView extends View {
     }
 
     public void setNumRows(int numRows) {
-        this.numRows = numRows + 1;
+        this.numRows = numRows;
         calculateDimensions();
     }
 
@@ -62,7 +60,7 @@ public class GridView extends View {
             return;
         }
 
-        cellWidth = getWidth() / numColumns;
+        cellWidth = getWidth() / (numColumns + 1);
         cellHeight = cellWidth;
 
         cellChecked = new String[numColumns][numRows];
@@ -163,25 +161,27 @@ public class GridView extends View {
         int width = getWidth();
         int height = getHeight();
 
-        for (int i = 1; i < numColumns; i++) {
-            for (int j = 1; j < numRows; j++) {
+        //This block will draw the grid based on the number of columns and rows.
+        for (int i = 1; i < numColumns + 1; i++) {
+            canvas.drawLine(i * cellWidth, cellHeight, i * cellWidth, numRows * cellHeight, blackPaint);
+        }
+
+        for (int i = 1; i < numRows + 1; i++) {
+            canvas.drawLine(cellWidth, i * cellHeight, numRows * cellWidth, i * cellHeight, blackPaint);
+
+        }
+
+        //This block will draw the stone on the board
+        for (int i = 0; i < numColumns; i++) {
+            for (int j = 0; j < numRows; j++) {
                 if (cellChecked[i][j] != null) {
                     if (cellChecked[i][j] == "WHITE"){
-                        canvas.drawCircle(i *cellWidth, j*cellHeight, cellWidth/3, greyPaint);
+                        canvas.drawCircle((i) *cellWidth, (j)*cellHeight, cellWidth/3, greyPaint);
                     } else {
-                        canvas.drawCircle(i*cellWidth, j*cellHeight, cellWidth/3, blackPaint);
+                        canvas.drawCircle((i)*cellWidth, (j)*cellHeight, cellWidth/3, blackPaint);
                     }
                 }
             }
-        }
-
-        for (int i = 1; i < numColumns; i++) {
-            canvas.drawLine(i * cellWidth, cellHeight, i * cellWidth, (numRows-1) * cellHeight, blackPaint);
-        }
-
-        for (int i = 1; i < numRows; i++) {
-            canvas.drawLine(cellWidth, i * cellHeight, (numRows-1) * cellWidth, i * cellHeight, blackPaint);
-
         }
 
         findWinner();
@@ -190,17 +190,34 @@ public class GridView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
+
+            //This block of code will round up the to the board intersection position.
             float xPosition = (float) event.getX()/cellWidth;
             float yPosition = (float) event.getY()/cellHeight;
             int column = (int)(Math.round(xPosition));
             int row = (int)(Math.round(yPosition));
+
+            /*DEBUG
+            Log.d("DEBUG", "column: " + xPosition);
+            Log.d("DEBUG", "row: " + yPosition);
+            Log.d("DEBUG", "column: " + column);
+            Log.d("DEBUG", "row: " + row);
+            */
+
+            //If position is out of the grid
+            if (column <= 1 || row <= 1) {
+                return false;
+            }
             if (column >= numColumns || row >= numRows) {
                 return false;
             }
 
+            //If position is already placed by other stone
             if(cellChecked[column][row] != null) {
                 return false;
             }
+
+            //Alternate the stone color
             if (activePlayer == 0){
                 cellChecked[column][row] = "WHITE";
                 activePlayer = 1;
@@ -208,6 +225,8 @@ public class GridView extends View {
                 cellChecked[column][row] = "BLACK";
                 activePlayer = 0;
             }
+
+
             Log.i("INFO", cellChecked[column][row] + ": "+ String.valueOf(column) + " , " + String.valueOf(row));
             invalidate();
         }
