@@ -27,7 +27,6 @@ public class GridView extends View {
     public GridView(Context context, AttributeSet attrs) {
         super(context, attrs);
         blackPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        greyPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         greyPaint.setColor(Color.GRAY);
     }
 
@@ -64,43 +63,73 @@ public class GridView extends View {
         cellHeight = cellWidth;
 
         cellChecked = new String[numColumns][numRows];
-        //Log.i("INFO", "numCOlumns = " + numColumns + "\t " + "numRows = " + numRows);
-
+        blockEdgeBoard();
         invalidate();
     }
 
+    private void blockEdgeBoard() {
+        for(int column = 0; column < numColumns; column++) {
+            //Log.i("INFO", String.valueOf(column) + "," + String.valueOf(0));
+            cellChecked[column][0] = "BLANK";
+            cellChecked[column][numRows-1] = "BLANK";
+        }
+
+        for(int row = 0; row < numRows; row++) {
+            cellChecked[0][row] = "BLANK";
+            cellChecked[numColumns-1][row] = "BLANK";
+        }
+    }
+    /*
     private boolean findWinner() {
-        checkHorizontal("WHITE");
-        checkHorizontal("BLACK");
-        checkVertical("WHITE");
-        checkVertical("BLACK");
-        return checkRightDiagonal("WHITE");
+        return checkHorizontal("WHITE");
+        //checkHorizontal("BLACK");
+        ///checkVertical("WHITE");
+        //checkVertical("BLACK");
+        //return checkRightDiagonal("WHITE");
     }
 
+    private boolean isNotBlockedEnd(int column, int row) {
+        Log.d("DEBUG", String.valueOf(column) + ", " + String.valueOf(row));
+        if ((cellChecked[column][row]) == null)
+            return true;
+        Log.d("DEBUG", String.valueOf(column) + ", " + String.valueOf(row) + "\t is blocked");
+        return false;
+    }
+
+
+    //Find Winner by doing horizontal check
     private boolean checkHorizontal(String playerColor) {
-        int score = 0;
         boolean isWinner = false;
-        for (int row = 1; row < numRows; row++) {
-            for (int column = 1; column < numColumns; column++) {
+        for (int row = 0; row < numRows; row++) {
+            int score = 0;
+            for (int column = 0; column < numColumns; column++) {
+                //Log.d("DEBUG", String.valueOf(column) + ", " + String.valueOf(row));
                 if (cellChecked[column][row] == playerColor && score < 5) {
                     score++;
-                    //Log.i("INFO", String.valueOf(score));
-                } else if(score == 5 &&
-                        ((cellChecked[column][row] == null) || (cellChecked[column-6][row] == null))) {
-                    Log.i("INFO", playerColor + " IS THE WINNER");
-                    isWinner = true;
-                    break;
-                } else{
+                    //Log.i("INFO", "SCORE:" + score);
+                    if(score == 5) {
+                        if(isNotBlockedEnd(column, row) || isNotBlockedEnd(column-5, row)) {
+                            Log.i("INFO", playerColor + " IS THE WINNER");
+                            isWinner = true;
+                            break;
+                        } else {
+                            score = 0;
+                            isWinner = false;
+                        }
+                    }
+                } else {
                     isWinner = false;
                     score = 0;
                 }
             }
+
             if(isWinner)
                 break;
         }
         return isWinner;
     }
-
+    */
+    /*
     private boolean checkVertical(String playerColor) {
         int score = 0;
         boolean isWinner = false;
@@ -150,6 +179,9 @@ public class GridView extends View {
         return isWinner;
     }
 
+    private boolean checkLeftDiagonal(String playerColor)
+    */
+
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawColor(Color.WHITE);
@@ -176,15 +208,20 @@ public class GridView extends View {
             for (int j = 0; j < numRows; j++) {
                 if (cellChecked[i][j] != null) {
                     if (cellChecked[i][j] == "WHITE"){
-                        canvas.drawCircle((i) *cellWidth, (j)*cellHeight, cellWidth/3, greyPaint);
-                    } else {
-                        canvas.drawCircle((i)*cellWidth, (j)*cellHeight, cellWidth/3, blackPaint);
+                        canvas.drawCircle((i+1) *cellWidth, (j+1)*cellHeight, cellWidth/3, greyPaint);
+                    } else if (cellChecked[i][j] == "BLACK") {
+                        canvas.drawCircle((i+1)*cellWidth, (j+1)*cellHeight, cellWidth/3, blackPaint);
                     }
+
+                    /*TEST
+                    else {
+                        canvas.drawCircle((i+1)*cellWidth, (j+1)*cellHeight, cellWidth/3, blackPaint);
+                    }*/
                 }
             }
         }
 
-        findWinner();
+        //findWinner();
     }
 
     @Override
@@ -194,8 +231,8 @@ public class GridView extends View {
             //This block of code will round up the to the board intersection position.
             float xPosition = (float) event.getX()/cellWidth;
             float yPosition = (float) event.getY()/cellHeight;
-            int column = (int)(Math.round(xPosition));
-            int row = (int)(Math.round(yPosition));
+            int column = (int)(Math.round(xPosition)) -1;
+            int row = (int)(Math.round(yPosition))-1;
 
             /*DEBUG
             Log.d("DEBUG", "column: " + xPosition);
@@ -205,9 +242,10 @@ public class GridView extends View {
             */
 
             //If position is out of the grid
-            if (column <= 1 || row <= 1) {
+            if (column < 0 || row < 0) {
                 return false;
             }
+
             if (column >= numColumns || row >= numRows) {
                 return false;
             }
