@@ -12,6 +12,7 @@ import android.view.View;
 public class GridView extends View {
     private int numColumns, numRows;
     private int cellWidth, cellHeight;
+    private String mode = "standard";
     private Paint blackPaint = new Paint();
     private Paint greyPaint = new Paint();
     private String[][] cellChecked;
@@ -46,6 +47,11 @@ public class GridView extends View {
 
     public int getNumRows() {
         return numRows;
+    }
+
+    public void setMode(String mode) {
+        this.mode = mode;
+        Log.i("INFO", "mode is set to " + this.mode);
     }
 
     @Override
@@ -94,25 +100,38 @@ public class GridView extends View {
         for (int row = 0; row < numRows; row++) {
             int score = 0;
             for (int column = 0; column < numColumns; column++) {
+
                 if (cellChecked[column][row] == playerColor && score < 5) {
                     score++;
-                    Log.i("INFO", "SCORE:" + score);
+
+                    //Log.i("INFO", "SCORE:" + score);
+
+                    //Found 5 in a row
                     if(score == 5) {
-                        if(isNotBlockedEnd(column+1, row, playerColor) ||
-                                isNotBlockedEnd(column-5, row, playerColor)) {
-                            Log.i("INFO", playerColor + " IS THE WINNER");
-                            isWinner = true;
-                            break;
+                        Log.i("INFO", "SCORE:" + score);
+                        Log.i("INFO", playerColor + " has five in a row");
+                        if(mode.equals("standard")) {
+                            if(isNotBlockedEnd(column + 1, row, null)) {
+                                Log.i("INFO", playerColor + " IS THE WINNER in standard mode");
+                                isWinner = true;
+                                break;
+                            }
+                        } else if(mode.equals("freestyle")) {
+                            if(isNotBlockedEnd(column+1, row, playerColor)){
+                                Log.i("INFO", playerColor + " IS THE WINNER in freestyle mode");
+                                isWinner = true;
+                                break;
+                            }
                         } else {
-                            Log.i("INFO", "Blocked at both ends");
-                            score = 0;
+                            //Blocked end at both side
                             isWinner = false;
+                            score = 0;
                         }
                     }
-                } else {
-                    isWinner = false;
-                    score = 0;
+                    continue;
                 }
+                isWinner = false;
+                score = 0;
             }
 
             if(isWinner)
@@ -123,7 +142,7 @@ public class GridView extends View {
 
     //Check if the end is blocked
     private boolean isNotBlockedEnd(int column, int row, String playerColor) {
-        if ((cellChecked[column][row]) == null)
+        if ((cellChecked[column][row]) == playerColor)
             return true;
         return false;
     }

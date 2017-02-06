@@ -13,6 +13,8 @@ public class MainActivity extends AppCompatActivity {
         GridView gridView = new GridView(this);
         gridView.setNumColumns(10);
         gridView.setNumRows(10);
+        //gridView.setMode("freestyle");
+        gridView.setMode("standard");
 
         setContentView(gridView);
     }
