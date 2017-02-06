@@ -96,12 +96,9 @@ public class GridView extends View {
 
     //=========CHECK WINNER=============
     private boolean findWinner() {
-        /*
-        if(checkHorizontal("WHITE"))
-            resetBoard();
-        return true;
-        */
-        //return checkVertical("WHITE");
+
+        checkHorizontal("WHITE");
+        checkVertical("WHITE");
         return checkRightDiagonal("WHITE");
     }
 
