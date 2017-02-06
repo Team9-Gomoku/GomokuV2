@@ -96,12 +96,10 @@ public class GridView extends View {
 
     //=========CHECK WINNER=============
     private boolean findWinner() {
-        /*
-        if(checkHorizontal("WHITE"))
-            resetBoard();
-        return true;
-        */
-        return checkVertical("WHITE");
+
+        checkHorizontal("WHITE");
+        checkVertical("WHITE");
+        return checkRightDiagonal("WHITE");
     }
 
     //Check if the end is blocked
@@ -217,6 +215,58 @@ public class GridView extends View {
         return isWinner;
     }
 
+    //Check right diagonal ↗↗↗↗↗↗
+    private boolean checkRightDiagonal(String playerColor) {
+        boolean isWinner = false;
+        for( int k = 0 ; k < numColumns * 2 ; k++ ) {
+            int score = 0;
+            for( int column = 0 ; column <= k ; column++ ) {
+                int row = k - column;
+                if( row < numColumns && column < numColumns ) {
+                    if (cellChecked[column][row] == playerColor && score < 5) {
+                        score++;
+
+                        if(score == 5) {
+                            //CHECK if there's NO 6 in a row AND
+                            // (left ends is NULL OR right ends is NULL)
+                            // checks XOOOOO   or  OOOOOX or OOOOO
+                            if(!isNotBlockedEnd(column+1, row-1, playerColor) &&
+                                    (isNotBlockedEnd(column-5, row+5) || isNotBlockedEnd(column+1, row+1))) {
+                                Log.i("INFO", playerColor + " IS THE WINNER in either STANDARD or BOTH mode");
+                                isWinner = true;
+                                break;
+                            }
+
+                            // checks OOOOOO (6x) or more
+
+                            //TODO uncomment line below to activate the mode
+                            //if (mode.equals("freestyle") && isNotBlockedEnd(column+1, row, playerColor)) {
+                            if (isNotBlockedEnd(column+1, row-1, playerColor)) {
+                                Log.i("INFO", playerColor + " IS THE WINNER in freestyle mode");
+                                isWinner = true;
+                                break;
+                            }
+
+                            //Blocked end at both side
+                            isWinner = false;
+                            score = 0;
+                        }
+                        continue;
+                    }
+                    isWinner = false;
+                    score = 0;
+                    //Log.i("INFO", String.valueOf(column) + "," + String.valueOf(row));
+                }
+            }
+            if(isWinner)
+                break;
+        }
+        return isWinner;
+    }
+
+    /*
+    private boolean checkLeftDiagonal(String playerColor)
+    */
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawColor(Color.WHITE);
@@ -301,36 +351,5 @@ public class GridView extends View {
 
         return true;
     }
-
-
-    /*
-
-    private boolean checkRightDiagonal(String playerColor) {
-        int score = 0;
-        boolean isWinner = false;
-        for( int k = 1 ; k < numColumns * 2 ; k++ ) {
-            for( int column = 1 ; column <= k ; column++ ) {
-                int row = k - column + 1;
-                if( row < numColumns && column < numColumns ) {
-                    if (cellChecked[column][row] == playerColor && score < 5) {
-                        score++;
-                    } else if (score == 5) {
-                        Log.i("INFO", playerColor + " IS THE WINNER");
-                        isWinner = true;
-                        break;
-                    } else{
-                        isWinner = false;
-                        score = 0;
-                    }
-                }
-            }
-            if(isWinner)
-                break;
-        }
-        return isWinner;
-    }
-
-    private boolean checkLeftDiagonal(String playerColor)
-    */
 
 }
