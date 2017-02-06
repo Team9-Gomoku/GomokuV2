@@ -73,6 +73,12 @@ public class GridView extends View {
         invalidate();
     }
 
+    private void resetBoard() {
+        cellChecked = new String[numColumns][numRows];
+        blockEdgeBoard();
+        invalidate();
+    }
+
     //Put invisible stones on the edge of the board
     //So black and white cannot be placed on board edge
     private void blockEdgeBoard() {
@@ -90,7 +96,9 @@ public class GridView extends View {
 
     //=========CHECK WINNER=============
     private boolean findWinner() {
-        return checkHorizontal("WHITE");
+        if(checkHorizontal("WHITE"))
+            resetBoard();
+        return true;
     }
 
     //Check if the end is blocked
@@ -133,6 +141,7 @@ public class GridView extends View {
                         }
 
                         // checks OOOOOO (6x) or more
+                        //TODO uncomment line below to activate the mode
                         //if (mode.equals("freestyle") && isNotBlockedEnd(column+1, row, playerColor)) {
                         if (isNotBlockedEnd(column+1, row, playerColor)) {
                             Log.i("INFO", playerColor + " IS THE WINNER in freestyle mode");
