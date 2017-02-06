@@ -96,9 +96,12 @@ public class GridView extends View {
 
     //=========CHECK WINNER=============
     private boolean findWinner() {
+        /*
         if(checkHorizontal("WHITE"))
             resetBoard();
         return true;
+        */
+        return checkVertical("WHITE");
     }
 
     //Check if the end is blocked
@@ -165,6 +168,54 @@ public class GridView extends View {
         return isWinner;
     }
 
+    private boolean checkVertical(String playerColor) {
+        boolean isWinner = false;
+        for (int column = 0; column < numColumns; column++) {
+            int score = 0;
+            for (int row = 0; row < numRows; row++) {
+
+                if (cellChecked[column][row] == playerColor && score < 5) {
+                    score++;
+
+                    //Log.i("INFO", "SCORE:" + score);
+                    //Found 5 in a row
+
+                    if(score == 5) {
+
+                        //CHECK if there's NO 6 in a row AND
+                        // (left ends is NULL OR right ends is NULL)
+                        // checks XOOOOO   or  OOOOOX or OOOOO
+                        if(!isNotBlockedEnd(column, row+1, playerColor) &&
+                                (isNotBlockedEnd(column, row-5) || isNotBlockedEnd(column, row+1))) {
+                            Log.i("INFO", playerColor + " IS THE WINNER in either STANDARD or BOTH mode");
+                            isWinner = true;
+                            break;
+                        }
+
+                        // checks OOOOOO (6x) or more
+                        //TODO uncomment line below to activate the mode
+                        //if (mode.equals("freestyle") && isNotBlockedEnd(column+1, row, playerColor)) {
+                        if (isNotBlockedEnd(column, row+1, playerColor)) {
+                            Log.i("INFO", playerColor + " IS THE WINNER in freestyle mode");
+                            isWinner = true;
+                            break;
+                        }
+
+                        //Blocked end at both side
+                        isWinner = false;
+                        score = 0;
+                    }
+                    continue;
+                }
+                isWinner = false;
+                score = 0;
+            }
+
+            if(isWinner)
+                break;
+        }
+        return isWinner;
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -196,11 +247,6 @@ public class GridView extends View {
                     } else if (cellChecked[i][j] == "BLACK") {
                         canvas.drawCircle((i+1)*cellWidth, (j+1)*cellHeight, cellWidth/3, blackPaint);
                     }
-
-                    /*TEST
-                    else {
-                        canvas.drawCircle((i+1)*cellWidth, (j+1)*cellHeight, cellWidth/3, blackPaint);
-                    }*/
                 }
             }
         }
