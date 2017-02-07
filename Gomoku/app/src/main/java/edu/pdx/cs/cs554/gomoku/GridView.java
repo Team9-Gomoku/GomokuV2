@@ -16,6 +16,7 @@ import static android.R.attr.right;
 public class GridView extends View {
     private int numColumns, numRows;
     private int cellWidth, cellHeight;
+    private boolean winner = false;
     private String mode = "standard";
     private Paint blackPaint = new Paint();
     private Paint greyPaint = new Paint();
@@ -401,7 +402,7 @@ public class GridView extends View {
             }
         }
 
-        findWinner();
+        winner = findWinner();
     }
 
     @Override
@@ -429,6 +430,9 @@ public class GridView extends View {
             if (column >= numColumns || row >= numRows) {
                 return false;
             }
+
+            if (winner)
+                return false;
 
             //If position is already placed by other stone
             if(cellChecked[column][row] != null) {
