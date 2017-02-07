@@ -4,10 +4,14 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+
+import static android.R.attr.left;
+import static android.R.attr.right;
 
 public class GridView extends View {
     private int numColumns, numRows;
@@ -28,7 +32,8 @@ public class GridView extends View {
     public GridView(Context context, AttributeSet attrs) {
         super(context, attrs);
         blackPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        greyPaint.setColor(Color.GRAY);
+        blackPaint.setStrokeWidth(8);
+        greyPaint.setColor(Color.WHITE);
     }
 
     public void setNumColumns(int numColumns) {
@@ -142,7 +147,7 @@ public class GridView extends View {
                         // checks XOOOOO   or  OOOOOX or OOOOO
                         if(!isNotBlockedEnd(column+1, row, playerColor) &&
                                 (isNotBlockedEnd(column-5, row) || isNotBlockedEnd(column+1, row))) {
-                            Log.i("INFO", playerColor + " IS THE WINNER in either STANDARD or BOTH mode");
+                            Log.i("INFO", playerColor + " IS THE WINNER");
                             isWinner = true;
                             break;
                         }
@@ -189,7 +194,7 @@ public class GridView extends View {
                         // checks XOOOOO   or  OOOOOX or OOOOO
                         if(!isNotBlockedEnd(column, row+1, playerColor) &&
                                 (isNotBlockedEnd(column, row-5) || isNotBlockedEnd(column, row+1))) {
-                            Log.i("INFO", playerColor + " IS THE WINNER in either STANDARD or BOTH mode");
+                            Log.i("INFO", playerColor + " IS THE WINNER");
                             isWinner = true;
                             break;
                         }
@@ -235,7 +240,7 @@ public class GridView extends View {
                             // checks XOOOOO   or  OOOOOX or OOOOO
                             if(!isNotBlockedEnd(column+1, row+1, playerColor) &&
                                     (isNotBlockedEnd(column-5, row+5) || isNotBlockedEnd(column+1, row+1))) {
-                                Log.i("INFO", playerColor + " IS THE WINNER in either STANDARD or BOTH mode");
+                                Log.i("INFO", playerColor + " IS THE WINNER");
                                 isWinner = true;
                                 break;
                             }
@@ -265,7 +270,7 @@ public class GridView extends View {
         return isWinner;
     }
 
-    //TODO MIGHT NEED TO REFACTOR THIS LATER ON
+    //TODO NEED TO REFACTOR THIS LATER ON
     private boolean checkLeftDiagonal(String playerColor) {
         boolean isWinner = false;
         int score = 0;
@@ -289,7 +294,7 @@ public class GridView extends View {
                             // checks XOOOOO   or  OOOOOX or OOOOO
                             if(!isNotBlockedEnd(column+1, row+1, playerColor) &&
                                     (isNotBlockedEnd(column-5, row-5) || isNotBlockedEnd(column+1, row+1))) {
-                                Log.i("INFO", playerColor + " IS THE WINNER in either STANDARD or BOTH mode");
+                                Log.i("INFO", playerColor + " IS THE WINNER");
                                 isWinner = true;
                                 break;
                             }
@@ -329,7 +334,7 @@ public class GridView extends View {
                             // checks XOOOOO   or  OOOOOX or OOOOO
                             if(!isNotBlockedEnd(column+1, row+1, playerColor) &&
                                     (isNotBlockedEnd(column-5, row-5) || isNotBlockedEnd(column+1, row+1))) {
-                                Log.i("INFO", playerColor + " IS THE WINNER in either STANDARD or BOTH mode");
+                                Log.i("INFO", playerColor + " IS THE WINNER");
                                 isWinner = true;
                                 break;
                             }
@@ -368,6 +373,10 @@ public class GridView extends View {
 
         int width = getWidth();
         int height = getHeight();
+
+        Drawable d = getResources().getDrawable(R.drawable.board);
+        d.setBounds(0, 0, width, height);
+        d.draw(canvas);
 
         //This block will draw the grid based on the number of columns and rows.
         for (int i = 1; i < numColumns + 1; i++) {

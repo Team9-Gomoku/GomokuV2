@@ -8,14 +8,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        //setContentView(R.layout.activity_main);
 
         GridView gridView = new GridView(this);
         gridView.setNumColumns(10);
         gridView.setNumRows(10);
         //gridView.setMode("freestyle");
         gridView.setMode("standard");
-
         setContentView(gridView);
     }
 }
