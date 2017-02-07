@@ -148,9 +148,7 @@ public class GridView extends View {
                         }
 
                         // checks OOOOOO (6x) or more
-                        //TODO uncomment line below to activate the mode
-                        //if (mode.equals("freestyle") && isNotBlockedEnd(column+1, row, playerColor)) {
-                        if (isNotBlockedEnd(column+1, row, playerColor)) {
+                        if (mode.equals("freestyle") && isNotBlockedEnd(column+1, row, playerColor)) {
                             Log.i("INFO", playerColor + " IS THE WINNER in freestyle mode");
                             isWinner = true;
                             break;
@@ -197,9 +195,7 @@ public class GridView extends View {
                         }
 
                         // checks OOOOOO (6x) or more
-                        //TODO uncomment line below to activate the mode
-                        //if (mode.equals("freestyle") && isNotBlockedEnd(column+1, row, playerColor)) {
-                        if (isNotBlockedEnd(column, row+1, playerColor)) {
+                        if (mode.equals("freestyle") && isNotBlockedEnd(column, row+1, playerColor)) {
                             Log.i("INFO", playerColor + " IS THE WINNER in freestyle mode");
                             isWinner = true;
                             break;
@@ -246,9 +242,7 @@ public class GridView extends View {
 
                             // checks OOOOOO (6x) or more
 
-                            //TODO uncomment line below to activate the mode
-                            //if (mode.equals("freestyle") && isNotBlockedEnd(column+1, row, playerColor)) {
-                            if (isNotBlockedEnd(column+1, row-1, playerColor)) {
+                            if (mode.equals("freestyle") && isNotBlockedEnd(column+1, row-1, playerColor)) {
                                 Log.i("INFO", playerColor + " IS THE WINNER in freestyle mode");
                                 isWinner = true;
                                 break;
@@ -301,9 +295,7 @@ public class GridView extends View {
                             }
 
                             // checks OOOOOO (6x) or more
-                            //TODO uncomment line below to activate the mode
-                            //if (mode.equals("freestyle") && isNotBlockedEnd(column+1, row, playerColor)) {
-                            if (isNotBlockedEnd(column+1, row+1, playerColor)) {
+                            if (mode.equals("freestyle") && isNotBlockedEnd(column+1, row+1, playerColor)) {
                                 Log.i("INFO", playerColor + " IS THE WINNER in freestyle mode");
                                 isWinner = true;
                                 break;
@@ -343,9 +335,7 @@ public class GridView extends View {
                             }
 
                             // checks OOOOOO (6x) or more
-                            //TODO uncomment line below to activate the mode
-                            //if (mode.equals("freestyle") && isNotBlockedEnd(column+1, row, playerColor)) {
-                            if (isNotBlockedEnd(column+1, row+1, playerColor)) {
+                            if (mode.equals("freestyle") && isNotBlockedEnd(column+1, row+1, playerColor)) {
                                 Log.i("INFO", playerColor + " IS THE WINNER in freestyle mode");
                                 isWinner = true;
                                 break;
