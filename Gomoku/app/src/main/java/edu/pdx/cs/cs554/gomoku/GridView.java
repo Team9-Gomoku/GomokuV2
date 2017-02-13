@@ -10,21 +10,18 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import static android.R.attr.left;
-import static android.R.attr.right;
-
 public class GridView extends View {
     private int numColumns, numRows;
     private int cellWidth, cellHeight;
     private boolean winner = false;
     private String mode = "standard";
     private Paint blackPaint = new Paint();
-    private Paint greyPaint = new Paint();
+    private Paint whitePaint = new Paint();
     private String[][] cellChecked;
 
     //Player 1 (WHITE) , if activePlayer = 0
     //Player 2 (BLACK) , if activePlayer = 1
-    private int activePlayer = 0;
+    private int activePlayer = 1;
 
     public GridView(Context context) {
         this(context, null);
@@ -34,7 +31,7 @@ public class GridView extends View {
         super(context, attrs);
         blackPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         blackPaint.setStrokeWidth(8);
-        greyPaint.setColor(Color.WHITE);
+        whitePaint.setColor(Color.WHITE);
     }
 
     public void setNumColumns(int numColumns) {
@@ -394,7 +391,7 @@ public class GridView extends View {
             for (int j = 0; j < numRows; j++) {
                 if (cellChecked[i][j] != null) {
                     if (cellChecked[i][j] == "WHITE"){
-                        canvas.drawCircle((i+1) *cellWidth, (j+1)*cellHeight, cellWidth/3, greyPaint);
+                        canvas.drawCircle((i+1) *cellWidth, (j+1)*cellHeight, cellWidth/3, whitePaint);
                     } else if (cellChecked[i][j] == "BLACK") {
                         canvas.drawCircle((i+1)*cellWidth, (j+1)*cellHeight, cellWidth/3, blackPaint);
                     }
@@ -443,9 +440,13 @@ public class GridView extends View {
             if (activePlayer == 0){
                 cellChecked[column][row] = "WHITE";
                 activePlayer = 1;
+                ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_white)).pause();
+                ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_black)).start();
             } else {
                 cellChecked[column][row] = "BLACK";
                 activePlayer = 0;
+                ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_black)).pause();
+                ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_white)).start();
             }
 
 
@@ -456,4 +457,8 @@ public class GridView extends View {
         return true;
     }
 
+    @Override
+    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, widthMeasureSpec);
+    }
 }
