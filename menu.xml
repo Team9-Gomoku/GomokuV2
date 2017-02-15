@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:background = "@drawable/wood"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/menu">
+    //tools:context="cs554_2017winter_gomoku.cs.pdx.edu.gomoku.MainActivity">
+
+    <TextView
+        android:text="Game Type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="58dp"
+        android:id="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:singleLine="false"
+        android:textColor="@android:color/black" />
+
+    <RadioButton
+        android:text="Standard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="27dp"
+        android:id="@+id/standard"
+
+        style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textColor="@android:color/black"
+        android:textAllCaps="true"
+        android:textColorLink="@android:color/black" />
+
+    <RadioButton
+        android:text="Freestyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/standard"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="62dp"
+        android:id="@+id/freestyle"
+
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textColorLink="@android:color/black"
+        android:textAllCaps="true"
+        android:textColor="@android:color/black" />
+
+    <RadioButton
+        android:text="Offline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/offline"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:layout_alignBaseline="@+id/online"
+        android:layout_alignBottom="@+id/online"
+        android:layout_alignStart="@+id/standard"
+        android:textAllCaps="true"
+        android:textColorLink="@android:color/black"
+        android:textColor="@android:color/black" />
+
+    <RadioButton
+        android:text="AI"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ai"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:layout_marginStart="20dp"
+        android:layout_below="@+id/textView2"
+        android:layout_toEndOf="@+id/textView"
+        android:layout_marginTop="27dp"
+        android:textAllCaps="true"
+        android:textColorLink="@android:color/black" />
+
+    <RadioButton
+        android:text="Online"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/online"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:layout_alignBaseline="@+id/ai"
+        android:layout_alignBottom="@+id/ai"
+        android:layout_centerHorizontal="true"
+        android:textColorLink="@android:color/black"
+        android:textAllCaps="true" />
+
+    <TextView
+        android:text="Mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView2"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:layout_below="@+id/freestyle"
+
+        android:layout_centerHorizontal="true"
+        android:textColorLink="@android:color/black"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:text="Board Size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/online"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="26dp"
+        android:id="@+id/textView3"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColorLink="@android:color/black"
+        android:textColor="@android:color/black" />
+
+    <RadioButton
+        android:text="10 x 10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView3"
+        android:layout_alignEnd="@+id/standard"
+        android:onClick="sendMessage"
+        android:layout_marginTop="13dp"
+        android:id="@+id/ten"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textAllCaps="false"
+        android:textColorLink="@android:color/black" />
+
+    <RadioButton
+        android:text="20 x 20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/fifteen"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="13dp"
+        android:id="@+id/twenty"
+        android:onClick="sendMessage2"
+        android:textColorLink="@android:color/black" />
+
+    <RadioButton
+        android:text="15 x 15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/fifteen"
+        android:onClick="sendMessage3"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:layout_alignBaseline="@+id/ten"
+        android:layout_alignBottom="@+id/ten"
+        android:layout_alignStart="@+id/online"
+        android:layout_marginStart="15dp"
+        android:textColorLink="@android:color/black" />
+
+<!--
+    <Button
+        android:text="START"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fifteen"
+        android:layout_alignStart="@+id/online"
+        android:layout_marginTop="45dp"
+        android:id="@+id/play"
+        android:onClick="playGame"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColorLink="@android:color/black"
+        android:textColor="@android:color/black"
+        android:textColorHighlight="@android:color/black" /> -->
+
+
+</RelativeLayout>
