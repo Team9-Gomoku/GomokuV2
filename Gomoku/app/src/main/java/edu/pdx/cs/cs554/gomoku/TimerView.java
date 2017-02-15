@@ -62,7 +62,7 @@ public class TimerView extends TextView {
 
         @Override
         public void onFinish() {
-            TimerView.this.setText(TimerView.this.getPrefix() + String.format("%02d:%02d", 0, 0));
+            TimerView.this.setText(TimerView.this.getPrefix() + "00:00");
         }
 
         public void stop() {

@@ -400,6 +400,10 @@ public class GridView extends View {
         }
 
         winner = findWinner();
+        if (winner) {
+            ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_black)).pause();
+            ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_white)).pause();
+        }
     }
 
     @Override
@@ -441,12 +445,16 @@ public class GridView extends View {
                 cellChecked[column][row] = "WHITE";
                 activePlayer = 1;
                 ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_white)).pause();
-                ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_black)).start();
+                if (!winner) {
+                    ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_black)).start();
+                }
             } else {
                 cellChecked[column][row] = "BLACK";
                 activePlayer = 0;
                 ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_black)).pause();
-                ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_white)).start();
+                if (!winner) {
+                    ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_white)).start();
+                }
             }
 
 
