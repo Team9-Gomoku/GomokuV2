@@ -6,7 +6,25 @@
     android:background = "@drawable/bg"
     android:id="@+id/splash">
 
-    <TextView
+    <Button
+        android:text="GOMOKU"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="59dp"
+        android:id="@+id/button2"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+        android:textColorLink="@android:color/black"
+        android:textColorHint="@android:color/black"
+        android:background="@android:color/transparent"
+        android:onClick="nextMessage"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="63dp"
+        android:layout_marginStart="63dp"
+        android:textColor="@android:color/white" />
+
+    <!-- <TextView
         android:text="GOMOKU"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,28 +35,8 @@
         android:textCursorDrawable="@android:color/black"
         android:textColorHint="@android:color/holo_orange_dark"
         android:textColor="@android:color/black"
-        android:layout_marginTop="46dp"
-        android:layout_marginEnd="16dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginRight="16dp" />
-
-    <Button
-        android:text="PLAY"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="53dp"
-        android:id="@+id/button2"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColorLink="@android:color/black"
-        android:textColorHint="@android:color/black"
-        android:background="@android:color/transparent"
-        android:textColor="@android:color/black"
-        android:onClick="nextMessage"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="114dp"
-        android:layout_marginStart="114dp" />
+        android:layout_marginTop="36dp" /> -->
 </RelativeLayout>
