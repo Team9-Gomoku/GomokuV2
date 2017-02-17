@@ -16,7 +16,7 @@
         android:textColorLink="@android:color/black"
         android:textColorHint="@android:color/black"
         android:background="@android:color/transparent"
-        android:onClick="nextMessage"
+        android:onClick="showMenu"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"

@@ -14,7 +14,7 @@ public class GridAdapter extends View {
     private int numColumns, numRows;
     private int cellWidth, cellHeight;
     private boolean winner = false;
-    private String mode = "standard";
+    private GameMode mode = GameMode.STANDARD;
     private Paint blackPaint = new Paint();
     private Paint whitePaint = new Paint();
     private String[][] cellChecked;
@@ -52,7 +52,7 @@ public class GridAdapter extends View {
         return numRows;
     }
 
-    public void setMode(String mode) {
+    public void setMode(GameMode mode) {
         this.mode = mode;
         Log.i("INFO", "mode is set to " + this.mode);
     }
@@ -151,7 +151,7 @@ public class GridAdapter extends View {
                         }
 
                         // checks OOOOOO (6x) or more
-                        if (mode.equals("freestyle") && isNotBlockedEnd(column+1, row, playerColor)) {
+                        if (mode.equals(GameMode.FREESTYLE) && isNotBlockedEnd(column+1, row, playerColor)) {
                             Log.i("INFO", playerColor + " IS THE WINNER in freestyle mode");
                             isWinner = true;
                             break;
@@ -198,7 +198,7 @@ public class GridAdapter extends View {
                         }
 
                         // checks OOOOOO (6x) or more
-                        if (mode.equals("freestyle") && isNotBlockedEnd(column, row+1, playerColor)) {
+                        if (mode.equals(GameMode.FREESTYLE) && isNotBlockedEnd(column, row+1, playerColor)) {
                             Log.i("INFO", playerColor + " IS THE WINNER in freestyle mode");
                             isWinner = true;
                             break;
@@ -245,7 +245,7 @@ public class GridAdapter extends View {
 
                             // checks OOOOOO (6x) or more
 
-                            if (mode.equals("freestyle") && isNotBlockedEnd(column+1, row-1, playerColor)) {
+                            if (mode.equals(GameMode.FREESTYLE) && isNotBlockedEnd(column+1, row-1, playerColor)) {
                                 Log.i("INFO", playerColor + " IS THE WINNER in freestyle mode");
                                 isWinner = true;
                                 break;
@@ -298,7 +298,7 @@ public class GridAdapter extends View {
                             }
 
                             // checks OOOOOO (6x) or more
-                            if (mode.equals("freestyle") && isNotBlockedEnd(column+1, row+1, playerColor)) {
+                            if (mode.equals(GameMode.FREESTYLE) && isNotBlockedEnd(column+1, row+1, playerColor)) {
                                 Log.i("INFO", playerColor + " IS THE WINNER in freestyle mode");
                                 isWinner = true;
                                 break;
@@ -338,7 +338,7 @@ public class GridAdapter extends View {
                             }
 
                             // checks OOOOOO (6x) or more
-                            if (mode.equals("freestyle") && isNotBlockedEnd(column+1, row+1, playerColor)) {
+                            if (mode.equals(GameMode.FREESTYLE) && isNotBlockedEnd(column+1, row+1, playerColor)) {
                                 Log.i("INFO", playerColor + " IS THE WINNER in freestyle mode");
                                 isWinner = true;
                                 break;
