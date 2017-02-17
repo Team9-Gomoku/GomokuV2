@@ -61,7 +61,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/play"
-        android:onClick="resetMethod"
+        android:onClick="showMenu"
         android:textAppearance="@style/TextAppearance.AppCompat.Button"
         android:textColorLink="@android:color/black"
         android:textColorHighlight="@android:color/black"

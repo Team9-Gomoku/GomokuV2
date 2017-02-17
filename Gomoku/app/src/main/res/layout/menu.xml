@@ -113,40 +113,40 @@
         android:textColor="@android:color/black" />
 
     <RadioButton
+        android:id="@+id/ten"
         android:text="10 x 10"
+        android:onClick="createBoard10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView3"
         android:layout_alignEnd="@+id/standard"
-        android:onClick="sendMessage"
         android:layout_marginTop="13dp"
-        android:id="@+id/ten"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textAllCaps="false"
         android:textColorLink="@android:color/black" />
 
     <RadioButton
-        android:text="20 x 20"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/fifteen"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="13dp"
-        android:id="@+id/twenty"
-        android:onClick="sendMessage2"
-        android:textColorLink="@android:color/black" />
-
-    <RadioButton
-        android:text="15 x 15"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/fifteen"
-        android:onClick="sendMessage3"
+        android:text="15 x 15"
+        android:onClick="createBoard15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:layout_alignBaseline="@+id/ten"
         android:layout_alignBottom="@+id/ten"
         android:layout_alignStart="@+id/online"
         android:layout_marginStart="15dp"
+        android:textColorLink="@android:color/black" />
+
+    <RadioButton
+        android:id="@+id/twenty"
+        android:text="20 x 20"
+        android:onClick="createBoard20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/fifteen"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="13dp"
         android:textColorLink="@android:color/black" />
 
 <!--
