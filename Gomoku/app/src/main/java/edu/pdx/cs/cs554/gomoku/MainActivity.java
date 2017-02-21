@@ -30,6 +30,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createBoard(int size) {
+
+        setContentView(R.layout.activity_main);
+        GridView gridView = (GridView) findViewById(R.id.gridview);
+        gridView.setEmptyView(new Offline(this));
+
+        Offline gridView1 = (Offline) findViewById(R.id.grid_view);
+        gridView1.setNumColumns(size);
+        gridView1.setNumRows(size);
+        gridView1.setMode(GameMode.FREESTYLE);
+
+        TimerView blackTimer = (TimerView) findViewById(R.id.timer_black);
+        blackTimer.setPrefix("BLACK PLAYER ");
+        blackTimer.start();
+
+        TimerView whiteTimer = (TimerView) findViewById(R.id.timer_white);
+        whiteTimer.setPrefix("WHITE PLAYER ");
+
+
+        /*
         setContentView(R.layout.activity_main);
         GridView gridView = (GridView) findViewById(R.id.gridview);
         gridView.setEmptyView(new GridAdapter(this));
@@ -45,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
         TimerView whiteTimer = (TimerView) findViewById(R.id.timer_white);
         whiteTimer.setPrefix("WHITE PLAYER ");
+        */
 
     }
 }

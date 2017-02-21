@@ -10,18 +10,20 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import static android.R.attr.mode;
+
 public class GridAdapter extends View {
-    private int numColumns, numRows;
-    private int cellWidth, cellHeight;
-    private boolean winner = false;
-    private GameMode mode = GameMode.STANDARD;
+    protected int numColumns, numRows;
+    protected int cellWidth, cellHeight;
+    protected boolean winner = false;
+    protected GameMode mode = GameMode.STANDARD;
     private Paint blackPaint = new Paint();
     private Paint whitePaint = new Paint();
-    private String[][] cellChecked;
+    protected String[][] cellChecked;
 
     //Player 1 (WHITE) , if activePlayer = 0
     //Player 2 (BLACK) , if activePlayer = 1
-    private int activePlayer = 1;
+    protected int activePlayer = 1;
 
     public GridAdapter(Context context) {
         this(context, null);
@@ -408,6 +410,7 @@ public class GridAdapter extends View {
             ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_white)).pause();
         }
     }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
