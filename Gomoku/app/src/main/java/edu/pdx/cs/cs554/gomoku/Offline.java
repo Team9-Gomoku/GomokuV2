@@ -8,7 +8,7 @@ import android.view.MotionEvent;
  * Created by boss on 2/20/17.
  */
 
-public class Offline extends GridAdapter {
+public class Offline extends Board {
     public Offline(Context context) {
         super(context, null);
     }

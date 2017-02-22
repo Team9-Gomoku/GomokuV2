@@ -4,15 +4,12 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import static android.R.attr.mode;
-
-public class GridAdapter extends View {
+public class Board extends View {
     protected int numColumns, numRows;
     protected int cellWidth, cellHeight;
     protected boolean winner = false;
@@ -25,11 +22,11 @@ public class GridAdapter extends View {
     //Player 2 (BLACK) , if activePlayer = 1
     protected int activePlayer = 1;
 
-    public GridAdapter(Context context) {
+    public Board(Context context) {
         this(context, null);
     }
 
-    public GridAdapter(Context context, AttributeSet attrs) {
+    public Board(Context context, AttributeSet attrs) {
         super(context, attrs);
         blackPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         blackPaint.setStrokeWidth(8);
@@ -101,29 +98,23 @@ public class GridAdapter extends View {
 
     //=========CHECK WINNER=============
     private boolean findWinner() {
-        if(checkHorizontal("WHITE") ||
+        return checkHorizontal("WHITE") ||
                 checkHorizontal("BLACK") ||
                 checkVertical("WHITE") ||
                 checkVertical("BLACK") ||
                 checkLeftDiagonal("WHITE") ||
                 checkLeftDiagonal("BLACK") ||
                 checkRightDiagonal("WHITE") ||
-                checkRightDiagonal("BLACK"))
-            return true;
-        return false;
+                checkRightDiagonal("BLACK");
     }
 
     //Check if the end is blocked
     private boolean isNotBlockedEnd(int column, int row, String playerColor) {
-        if ((cellChecked[column][row]) == playerColor)
-            return true;
-        return false;
+        return (cellChecked[column][row]) == playerColor;
     }
 
     private boolean isNotBlockedEnd(int column, int row) {
-        if ((cellChecked[column][row]) == null)
-            return true;
-        return false;
+        return (cellChecked[column][row]) == null;
     }
 
     //Find Winner by doing horizontal check.
