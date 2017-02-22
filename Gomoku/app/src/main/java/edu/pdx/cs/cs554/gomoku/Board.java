@@ -38,17 +38,9 @@ public class Board extends View {
         calculateDimensions();
     }
 
-    public int getNumColumns() {
-        return numColumns;
-    }
-
     public void setNumRows(int numRows) {
         this.numRows = numRows;
         calculateDimensions();
-    }
-
-    public int getNumRows() {
-        return numRows;
     }
 
     public void setMode(GameMode mode) {
@@ -310,6 +302,10 @@ public class Board extends View {
             if(isWinner)
                 break;
         }
+        if(isWinner) {
+            return true;
+        }
+
 
         //Check the upper half
         for(i=1; i<numColumns; i++){
@@ -354,35 +350,18 @@ public class Board extends View {
         return isWinner;
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        canvas.drawColor(Color.TRANSPARENT);
-
-        Paint myPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        myPaint.setStrokeWidth(3);
-
+    private void drawBoard(Canvas canvas) {
         if (numColumns == 0 || numRows == 0) {
             return;
         }
 
-        int width = getWidth();
-        int height = getHeight();
-
-     //   Drawable d = getResources().getDrawable(R.drawable.board);
-      //  d.setBounds(0, 0, width, height);
-      //  d.draw(canvas);
-
-        //This block will draw the grid based on the number of columns and rows.
         for (int i = 1; i < numColumns + 1; i++) {
-            canvas.drawLine(i * cellWidth, cellHeight, i * cellWidth, numRows * cellHeight, myPaint);
+            canvas.drawLine(i * cellWidth, cellHeight, i * cellWidth, numRows * cellHeight, blackPaint);
+            canvas.drawLine(cellWidth, i * cellHeight, numRows * cellWidth, i * cellHeight, blackPaint);
         }
+    }
 
-        for (int i = 1; i < numRows + 1; i++) {
-            canvas.drawLine(cellWidth, i * cellHeight, numRows * cellWidth, i * cellHeight, myPaint);
-
-        }
-
-        //This block will draw the stone on the board
+    private void drawStone(Canvas canvas) {
         for (int i = 0; i < numColumns; i++) {
             for (int j = 0; j < numRows; j++) {
                 if (cellChecked[i][j] != null) {
@@ -394,7 +373,13 @@ public class Board extends View {
                 }
             }
         }
+    }
 
+    @Override
+    protected void onDraw(Canvas canvas) {
+        canvas.drawColor(Color.TRANSPARENT);
+        drawBoard(canvas);
+        drawStone(canvas);
         winner = findWinner();
         if (winner) {
             ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_black)).pause();
@@ -413,12 +398,6 @@ public class Board extends View {
             int column = (int)(Math.round(xPosition)) -1;
             int row = (int)(Math.round(yPosition))-1;
 
-            /*DEBUG
-            Log.d("DEBUG", "column: " + xPosition);
-            Log.d("DEBUG", "row: " + yPosition);
-            Log.d("DEBUG", "column: " + column);
-            Log.d("DEBUG", "row: " + row);
-            */
 
             //If position is out of the grid
             if (column < 0 || row < 0) {
