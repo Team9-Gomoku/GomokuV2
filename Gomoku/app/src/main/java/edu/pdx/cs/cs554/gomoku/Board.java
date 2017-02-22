@@ -17,7 +17,7 @@ public class Board extends View {
     private Paint blackPaint = new Paint();
     private Paint whitePaint = new Paint();
     protected String[][] cellChecked;
-    private String mode2 = "OFFLINE2";
+    private String mode2 = "OFFLINE";
     //private String mode2 = "AI";
 
 
