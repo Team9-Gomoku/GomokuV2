@@ -17,6 +17,9 @@ public class Board extends View {
     private Paint blackPaint = new Paint();
     private Paint whitePaint = new Paint();
     protected String[][] cellChecked;
+    private String mode2 = "OFFLINE2";
+    //private String mode2 = "AI";
+
 
     //Player 1 (WHITE) , if activePlayer = 0
     //Player 2 (BLACK) , if activePlayer = 1
@@ -416,30 +419,39 @@ public class Board extends View {
                 return false;
             }
 
-            //Alternate the stone color
-            if (activePlayer == 0){
-                cellChecked[column][row] = "WHITE";
-                activePlayer = 1;
-                ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_white)).pause();
-                if (!winner) {
-                    ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_black)).start();
-                }
-            } else {
-                cellChecked[column][row] = "BLACK";
-                activePlayer = 0;
-                ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_black)).pause();
-                if (!winner) {
-                    ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_white)).start();
-                }
+            if(mode2.equals("OFFLINE")){
+                OfflineMode(column, row);
             }
-
-
-            Log.i("INFO", cellChecked[column][row] + ": "+ String.valueOf(column) + " , " + String.valueOf(row));
             invalidate();
         }
-
         return true;
     }
+
+    private void OfflineMode(int column, int row) {
+        //Alternate the stone color
+        if (activePlayer == 0){
+            cellChecked[column][row] = "WHITE";
+            activePlayer = 1;
+            ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_white)).pause();
+            if (!winner) {
+                ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_black)).start();
+            }
+        } else {
+            cellChecked[column][row] = "BLACK";
+            activePlayer = 0;
+            ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_black)).pause();
+            if (!winner) {
+                ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_white)).start();
+            }
+        }
+        Log.i("INFO", cellChecked[column][row] + ": "+ String.valueOf(column) + " , " + String.valueOf(row));
+    }
+
+    /*
+    private void AIMode(int column, int row) {
+
+    }
+     */
 
     @Override
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
