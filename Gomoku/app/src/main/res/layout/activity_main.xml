@@ -11,8 +11,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="edu.pdx.cs.cs554.gomoku.MainActivity">
 
-    <edu.pdx.cs.cs554.gomoku.GridAdapter
-        android:id="@+id/grid_view"
+    <edu.pdx.cs.cs554.gomoku.Board
+        android:id="@+id/board"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
@@ -22,7 +22,7 @@
         android:id="@+id/space"
         android:layout_width="1dp"
         android:layout_height="10dp"
-        android:layout_below="@id/grid_view" />
+        android:layout_below="@id/board" />
 
     <edu.pdx.cs.cs554.gomoku.TimerView
         android:id="@+id/timer_black"
@@ -45,16 +45,6 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/timer_black" />
-
-    <GridView
-        android:id="@+id/gridview"
-        android:numColumns="15"
-        android:background= "@drawable/wood"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
 
     <Button
         android:text="BACK"

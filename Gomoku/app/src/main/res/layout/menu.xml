@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/menu">
-    //tools:context="cs554_2017winter_gomoku.cs.pdx.edu.gomoku.MainActivity">
 
     <TextView
         android:text="Game Type"

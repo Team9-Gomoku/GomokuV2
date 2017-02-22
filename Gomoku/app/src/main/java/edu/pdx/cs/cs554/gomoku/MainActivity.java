@@ -3,7 +3,6 @@ package edu.pdx.cs.cs554.gomoku;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.GridView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,13 +30,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void createBoard(int size) {
         setContentView(R.layout.activity_main);
-        GridView gridView = (GridView) findViewById(R.id.gridview);
-        gridView.setEmptyView(new GridAdapter(this));
 
-        GridAdapter gridView1 = (GridAdapter) findViewById(R.id.grid_view);
-        gridView1.setNumColumns(size);
-        gridView1.setNumRows(size);
-        gridView1.setMode(GameMode.FREESTYLE);
+        Board board = (Board) findViewById(R.id.board);
+        board.setNumColumns(size);
+        board.setNumRows(size);
+        board.setMode(GameMode.FREESTYLE);
 
         TimerView blackTimer = (TimerView) findViewById(R.id.timer_black);
         blackTimer.setPrefix("BLACK PLAYER ");
@@ -45,6 +42,5 @@ public class MainActivity extends AppCompatActivity {
 
         TimerView whiteTimer = (TimerView) findViewById(R.id.timer_white);
         whiteTimer.setPrefix("WHITE PLAYER ");
-
     }
 }

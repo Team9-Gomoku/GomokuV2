@@ -4,30 +4,32 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class GridAdapter extends View {
-    private int numColumns, numRows;
-    private int cellWidth, cellHeight;
-    private boolean winner = false;
-    private GameMode mode = GameMode.STANDARD;
+public class Board extends View {
+    protected int numColumns, numRows;
+    protected int cellWidth, cellHeight;
+    protected boolean winner = false;
+    protected GameMode mode = GameMode.STANDARD;
     private Paint blackPaint = new Paint();
     private Paint whitePaint = new Paint();
-    private String[][] cellChecked;
+    protected String[][] cellChecked;
+    private String mode2 = "OFFLINE";
+    //private String mode2 = "AI";
+
 
     //Player 1 (WHITE) , if activePlayer = 0
     //Player 2 (BLACK) , if activePlayer = 1
-    private int activePlayer = 1;
+    protected int activePlayer = 1;
 
-    public GridAdapter(Context context) {
+    public Board(Context context) {
         this(context, null);
     }
 
-    public GridAdapter(Context context, AttributeSet attrs) {
+    public Board(Context context, AttributeSet attrs) {
         super(context, attrs);
         blackPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         blackPaint.setStrokeWidth(8);
@@ -39,17 +41,9 @@ public class GridAdapter extends View {
         calculateDimensions();
     }
 
-    public int getNumColumns() {
-        return numColumns;
-    }
-
     public void setNumRows(int numRows) {
         this.numRows = numRows;
         calculateDimensions();
-    }
-
-    public int getNumRows() {
-        return numRows;
     }
 
     public void setMode(GameMode mode) {
@@ -99,29 +93,23 @@ public class GridAdapter extends View {
 
     //=========CHECK WINNER=============
     private boolean findWinner() {
-        if(checkHorizontal("WHITE") ||
+        return checkHorizontal("WHITE") ||
                 checkHorizontal("BLACK") ||
                 checkVertical("WHITE") ||
                 checkVertical("BLACK") ||
                 checkLeftDiagonal("WHITE") ||
                 checkLeftDiagonal("BLACK") ||
                 checkRightDiagonal("WHITE") ||
-                checkRightDiagonal("BLACK"))
-            return true;
-        return false;
+                checkRightDiagonal("BLACK");
     }
 
     //Check if the end is blocked
     private boolean isNotBlockedEnd(int column, int row, String playerColor) {
-        if ((cellChecked[column][row]) == playerColor)
-            return true;
-        return false;
+        return (cellChecked[column][row]) == playerColor;
     }
 
     private boolean isNotBlockedEnd(int column, int row) {
-        if ((cellChecked[column][row]) == null)
-            return true;
-        return false;
+        return (cellChecked[column][row]) == null;
     }
 
     //Find Winner by doing horizontal check.
@@ -317,6 +305,10 @@ public class GridAdapter extends View {
             if(isWinner)
                 break;
         }
+        if(isWinner) {
+            return true;
+        }
+
 
         //Check the upper half
         for(i=1; i<numColumns; i++){
@@ -361,35 +353,18 @@ public class GridAdapter extends View {
         return isWinner;
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        canvas.drawColor(Color.TRANSPARENT);
-
-        Paint myPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        myPaint.setStrokeWidth(3);
-
+    private void drawBoard(Canvas canvas) {
         if (numColumns == 0 || numRows == 0) {
             return;
         }
 
-        int width = getWidth();
-        int height = getHeight();
-
-     //   Drawable d = getResources().getDrawable(R.drawable.board);
-      //  d.setBounds(0, 0, width, height);
-      //  d.draw(canvas);
-
-        //This block will draw the grid based on the number of columns and rows.
         for (int i = 1; i < numColumns + 1; i++) {
-            canvas.drawLine(i * cellWidth, cellHeight, i * cellWidth, numRows * cellHeight, myPaint);
+            canvas.drawLine(i * cellWidth, cellHeight, i * cellWidth, numRows * cellHeight, blackPaint);
+            canvas.drawLine(cellWidth, i * cellHeight, numRows * cellWidth, i * cellHeight, blackPaint);
         }
+    }
 
-        for (int i = 1; i < numRows + 1; i++) {
-            canvas.drawLine(cellWidth, i * cellHeight, numRows * cellWidth, i * cellHeight, myPaint);
-
-        }
-
-        //This block will draw the stone on the board
+    private void drawStone(Canvas canvas) {
         for (int i = 0; i < numColumns; i++) {
             for (int j = 0; j < numRows; j++) {
                 if (cellChecked[i][j] != null) {
@@ -401,13 +376,20 @@ public class GridAdapter extends View {
                 }
             }
         }
+    }
 
+    @Override
+    protected void onDraw(Canvas canvas) {
+        canvas.drawColor(Color.TRANSPARENT);
+        drawBoard(canvas);
+        drawStone(canvas);
         winner = findWinner();
         if (winner) {
             ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_black)).pause();
             ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_white)).pause();
         }
     }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -419,12 +401,6 @@ public class GridAdapter extends View {
             int column = (int)(Math.round(xPosition)) -1;
             int row = (int)(Math.round(yPosition))-1;
 
-            /*DEBUG
-            Log.d("DEBUG", "column: " + xPosition);
-            Log.d("DEBUG", "row: " + yPosition);
-            Log.d("DEBUG", "column: " + column);
-            Log.d("DEBUG", "row: " + row);
-            */
 
             //If position is out of the grid
             if (column < 0 || row < 0) {
@@ -443,30 +419,39 @@ public class GridAdapter extends View {
                 return false;
             }
 
-            //Alternate the stone color
-            if (activePlayer == 0){
-                cellChecked[column][row] = "WHITE";
-                activePlayer = 1;
-                ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_white)).pause();
-                if (!winner) {
-                    ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_black)).start();
-                }
-            } else {
-                cellChecked[column][row] = "BLACK";
-                activePlayer = 0;
-                ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_black)).pause();
-                if (!winner) {
-                    ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_white)).start();
-                }
+            if(mode2.equals("OFFLINE")){
+                OfflineMode(column, row);
             }
-
-
-            Log.i("INFO", cellChecked[column][row] + ": "+ String.valueOf(column) + " , " + String.valueOf(row));
             invalidate();
         }
-
         return true;
     }
+
+    private void OfflineMode(int column, int row) {
+        //Alternate the stone color
+        if (activePlayer == 0){
+            cellChecked[column][row] = "WHITE";
+            activePlayer = 1;
+            ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_white)).pause();
+            if (!winner) {
+                ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_black)).start();
+            }
+        } else {
+            cellChecked[column][row] = "BLACK";
+            activePlayer = 0;
+            ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_black)).pause();
+            if (!winner) {
+                ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_white)).start();
+            }
+        }
+        Log.i("INFO", cellChecked[column][row] + ": "+ String.valueOf(column) + " , " + String.valueOf(row));
+    }
+
+    /*
+    private void AIMode(int column, int row) {
+
+    }
+     */
 
     @Override
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
