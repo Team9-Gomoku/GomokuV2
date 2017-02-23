@@ -17,8 +17,8 @@ public class Board extends View {
     private Paint blackPaint = new Paint();
     private Paint whitePaint = new Paint();
     protected String[][] cellChecked;
-    private String mode2 = "OFFLINE";
-    //private String mode2 = "AI";
+    //private String mode2 = "OFFLINE";
+    private String mode2 = "AI";
 
 
     //Player 1 (WHITE) , if activePlayer = 0
@@ -93,7 +93,7 @@ public class Board extends View {
 
     //=========CHECK WINNER=============
     private boolean findWinner() {
-        return checkHorizontal("WHITE") ||
+        winner =  checkHorizontal("WHITE") ||
                 checkHorizontal("BLACK") ||
                 checkVertical("WHITE") ||
                 checkVertical("BLACK") ||
@@ -101,6 +101,13 @@ public class Board extends View {
                 checkLeftDiagonal("BLACK") ||
                 checkRightDiagonal("WHITE") ||
                 checkRightDiagonal("BLACK");
+
+        if (winner) {
+            ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_black)).pause();
+            ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_white)).pause();
+        }
+
+        return winner;
     }
 
     //Check if the end is blocked
@@ -383,11 +390,7 @@ public class Board extends View {
         canvas.drawColor(Color.TRANSPARENT);
         drawBoard(canvas);
         drawStone(canvas);
-        winner = findWinner();
-        if (winner) {
-            ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_black)).pause();
-            ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_white)).pause();
-        }
+        findWinner();
     }
 
 
@@ -421,6 +424,8 @@ public class Board extends View {
 
             if(mode2.equals("OFFLINE")){
                 OfflineMode(column, row);
+            } else if (mode2.equals("AI")) {
+                AIMode(column, row);
             }
             invalidate();
         }
@@ -447,11 +452,153 @@ public class Board extends View {
         Log.i("INFO", cellChecked[column][row] + ": "+ String.valueOf(column) + " , " + String.valueOf(row));
     }
 
-    /*
-    private void AIMode(int column, int row) {
 
+
+
+
+
+    // ================================== AI MODE =============================================
+    //TODO
+
+    private void AIMode(int column, int row) {
+        //Alternate the stone color
+        cellChecked[column][row] = "WHITE";
+        Log.i("INFO", cellChecked[column][row] + ": "+ String.valueOf(column) + " , " + String.valueOf(row));
+        findWinner();
+        computerMove();
     }
-     */
+
+
+    private void computerMove() {
+        int [] cellToPlace = threatSequences();
+
+        if(cellToPlace != null) {
+            Log.i("INFO", "DETECTED THREAT");
+            cellChecked[cellToPlace[0]][cellToPlace[1]] = "BLACK";
+        }
+    }
+
+    private int [] threatSequences () {
+        int [] computerMove;
+        computerMove = checkThreatHorizontal("WHITE");
+        if(computerMove == null) {
+            computerMove = checkThreatVertical("WHITE");
+        }
+
+        return computerMove;
+    }
+
+    /*    //Check if the end is blocked
+    private boolean isNotBlockedEnd(int column, int row, String playerColor) {
+        return (cellChecked[column][row]) == playerColor;
+    }
+
+    private boolean isNotBlockedEnd(int column, int row) {
+        return (cellChecked[column][row]) == null;
+    }*/
+
+    private int [] checkThreatHorizontal(String playerColor) {
+        for (int row = 0; row < numRows; row++) {
+            int score = 0;
+            for (int column = 0; column < numColumns; column++) {
+
+                if (cellChecked[column][row] == playerColor && score < 4) {
+                    score++;
+
+                    if (score == 2) {
+                        //_ O _  O O _
+                        if (isNotBlockedEnd(column - 3, row, playerColor) && isNotBlockedEnd(column - 2, row) ) {
+                            int[] cellThreat = {column - 2, row};
+                            return cellThreat;
+                        }
+
+                        //_ O O _  O _
+                        else if (isNotBlockedEnd(column + 2, row, playerColor) && isNotBlockedEnd(column + 1, row) ) {
+                            int[] cellThreat = {column + 1, row};
+                            return cellThreat;
+                        }
+                    }
+
+                    if (score == 3) {
+                        // _ O O O _
+                        if (isNotBlockedEnd(column + 1, row)) {
+                            int[] cellThreat = {column + 1, row};
+                            return cellThreat;
+                        }
+                    }
+
+                    // X O O O O _
+                    // _ O O O O X
+                    // _ O O O O _
+                    if (score == 4) {
+                        if (isNotBlockedEnd(column + 1, row)) {
+                            int[] cellThreat = {column + 1, row};
+                            return cellThreat;
+                        } else if (isNotBlockedEnd(column - 4, row)) {
+                            int[] cellThreat = {column - 4, row};
+                            return cellThreat;
+                        }
+                    }
+
+                } else {
+                    score = 0;
+                }
+            }
+        }
+        return null;
+    }
+
+    private int [] checkThreatVertical(String playerColor) {
+        for (int column = 0; column < numColumns; column++) {
+            int score = 0;
+            for (int row = 0; row < numRows; row++) {
+
+                if (cellChecked[column][row] == playerColor && score < 4) {
+                    score++;
+
+                    if (score == 2) {
+                        //_ O _  O O _
+                        if (isNotBlockedEnd(column, row - 3, playerColor) && isNotBlockedEnd(column, row-2) ) {
+                            int[] cellThreat = {column, row -2};
+                            return cellThreat;
+                        }
+
+                        //_ O O _  O _
+                        else if (isNotBlockedEnd(column, row + 2, playerColor) && isNotBlockedEnd(column, row + 1) ) {
+                            int[] cellThreat = {column, row + 1};
+                            return cellThreat;
+                        }
+                    }
+
+                    if (score == 3) {
+                        // _ O O O _
+                        if (isNotBlockedEnd(column, row + 1)) {
+                            int[] cellThreat = {column, row + 1};
+                            return cellThreat;
+                        }
+                    }
+
+                    // X O O O O _
+                    // _ O O O O X
+                    // _ O O O O _
+                    if (score == 4) {
+                        if (isNotBlockedEnd(column, row + 1)) {
+                            int[] cellThreat = {column, row + 1};
+                            return cellThreat;
+                        } else if (isNotBlockedEnd(column, row - 4)) {
+                            int[] cellThreat = {column, row - 4};
+                            return cellThreat;
+                        }
+                    }
+
+                } else {
+                    score = 0;
+                }
+            }
+        }
+        return null;
+    }
+
 
     @Override
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
