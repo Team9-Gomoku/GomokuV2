@@ -276,6 +276,65 @@ public class Board extends View {
         return isWinner;
     }
 
+    private boolean checkLeftDiagonal(String playerColor) {
+        int score = 0;
+        boolean isWinner = false;
+
+        //number of reverse diagonal
+        int k = numRows + numColumns - 1;
+        int row = numRows - k;
+        for(int i =numRows-1; i>=row; i--){
+            int tmpRow = i;
+            int tmpCol= 0;
+            while(tmpRow<numRows && tmpCol<numColumns){
+                if(tmpRow<0){
+                    tmpCol++;
+                    tmpRow++;
+                    continue;
+                }else{
+                    if (cellChecked[tmpCol][tmpRow] == playerColor && score < 5) {
+                        score++;
+                        Log.i("INFO", "SCORE: " + String.valueOf(score));
+                        if(score == 5){
+                            //CHECK if there's NO 6 in a row AND
+                            // (left ends is NULL OR right ends is NULL)
+                            // checks XOOOOO   or  OOOOOX or OOOOO
+                            if(!isNotBlockedEnd(tmpCol+1, tmpRow+1, playerColor) &&
+                                    (isNotBlockedEnd(tmpCol-5, tmpRow-5) || isNotBlockedEnd(tmpCol+1, tmpRow+1))) {
+                                Log.i("INFO", playerColor + " IS THE WINNER");
+                                isWinner = true;
+                                break;
+                            }
+
+                            // checks OOOOOO (6x) or more
+                            if (mode.equals(GameMode.FREESTYLE) && isNotBlockedEnd(tmpCol+1, tmpRow+1, playerColor)) {
+                                Log.i("INFO", playerColor + " IS THE WINNER in freestyle mode");
+                                isWinner = true;
+                                break;
+                            }
+                            score = 0;
+                            isWinner = false;
+                        }
+                    } else {
+                        score = 0;
+                        isWinner = false;
+                    }
+
+                    //Log.i("INFO", String.valueOf(tmpCol) + "," +  String.valueOf(tmpRow));
+                    tmpCol++;
+                    tmpRow++;
+
+                }
+            }
+            if(isWinner)
+                break;
+            score = 0;
+            //Log.i("INFO", "SCORE: " + score);
+        }
+        return isWinner;
+    }
+
+    /*
     //TODO NEED TO REFACTOR THIS LATER ON
     private boolean checkLeftDiagonal(String playerColor) {
         boolean isWinner = false;
@@ -371,7 +430,7 @@ public class Board extends View {
         }
 
         return isWinner;
-    }
+    }*/
 
     private void drawBoard(Canvas canvas) {
         if (numColumns == 0 || numRows == 0) {
