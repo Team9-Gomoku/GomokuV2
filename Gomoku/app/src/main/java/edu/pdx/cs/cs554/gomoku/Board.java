@@ -215,10 +215,22 @@ public class Board extends View {
         return isWinner;
     }
 
+    /*
+        for( int k = 0 ; k < dim * 2 ; k++ ) {
+        for( int j = 0 ; j <= k ; j++ ) {
+            int i = k - j;
+            if( i < dim && j < dim ) {
+                System.out.print( array[i][j] + " " );
+            }
+        }
+        System.out.println();
+    }
+     */
+
     //Check right diagonal ↗↗↗↗↗↗
     private boolean checkRightDiagonal(String playerColor) {
         boolean isWinner = false;
-        for( int k = 0 ; k < numColumns ; k++ ) {
+        for( int k = 0 ; k < numColumns * 2 ; k++ ) {
             int score = 0;
             for( int column = 0 ; column <= k ; column++ ) {
                 int row = k - column;
@@ -253,8 +265,9 @@ public class Board extends View {
                         continue;
                     }
                     isWinner = false;
+                    //Log.i("INFO", String.valueOf(column) + "," +  String.valueOf(row));
                     score = 0;
-                    //Log.i("INFO", String.valueOf(column) + "," + String.valueOf(row));
+
                 }
             }
             if(isWinner)
@@ -486,6 +499,10 @@ public class Board extends View {
             computerMove = checkThreatVertical("WHITE");
         }
 
+        if(computerMove == null) {
+            computerMove = checkThreatRightDiagonal("WHITE");
+        }
+
         return computerMove;
     }
 
@@ -659,6 +676,102 @@ public class Board extends View {
         return null;
     }
 
+
+    //Check right diagonal ↗↗↗↗↗↗
+    private int [] checkThreatRightDiagonal(String playerColor) {
+        for( int k = 0 ; k < numColumns * 2 ; k++ ) {
+            int score = 0;
+            for( int column = 0 ; column <= k ; column++ ) {
+                int row = k - column;
+                if( row < numColumns && column < numColumns ) {
+                    //cellChecked[column][row] = "BLACK";
+                    if (cellChecked[column][row] == playerColor && score < 5) {
+                        score++;
+
+                        Log.i("INFO", "SCORE: " + score);
+                        if (score == 2) {
+                            // (_|O) O _ O O _  -> (_|O) O X O O _
+                            if(isNotBlockedEnd(column + 1, row - 1, null) &&
+                                    isNotBlockedEnd(column - 2, row + 2, null)  &&
+                                    isNotBlockedEnd(column - 3, row + 3, playerColor) &&
+                                    (isNotBlockedEnd(column - 4, row + 4, null) ||
+                                            isNotBlockedEnd(column - 4, row + 4, playerColor))) {
+                                return new int [] {column - 2, row + 2};
+                            }
+
+                            // _ O O _ O (_|X) -> _ O O X O (_|O)
+                            if(isNotBlockedEnd(column - 2, row + 2, null) &&
+                                    isNotBlockedEnd(column + 1, row - 1, null)  &&
+                                    isNotBlockedEnd(column + 2, row - 2, playerColor) &&
+                                    (isNotBlockedEnd(column + 3, row - 3 , null) ||
+                                            isNotBlockedEnd(column + 3, row - 3, playerColor))) {
+                                return new int [] {column + 1, row - 1};
+                            }
+
+
+                            // O O _ O O -> O O X O O
+                            if(isNotBlockedEnd(column - 2, row + 2, null) &&
+                                    isNotBlockedEnd(column - 3, row + 3, playerColor) &&
+                                    isNotBlockedEnd(column - 4, row + 4, playerColor)) {
+                                return new int [] {column - 2, row + 2};
+                            }
+                        }
+
+                        if (score == 3) {
+                            // O O O _ O -> O O O X O
+                            // O _ O O O -> O X O O O
+                            // B _ O O O _   ->  B _ O O O X _
+                            // _ O O O _ B   ->  _ X O O O _ B
+                            // _ _ O O O _ _ ->  _ _ O O O X _
+                            // X O O O _ O
+                            // O _ O O O X
+                            if (isNotBlockedEnd(column + 1, row - 1, null) &&
+                                    isNotBlockedEnd(column + 2, row - 2, playerColor)) {
+                                return new int [] {column + 1, row - 1};
+                            } else if (isNotBlockedEnd(column - 3, row + 3, null) &&
+                                    isNotBlockedEnd(column - 4, row + 4, playerColor)) {
+                                return new int [] {column - 3, row + 3};
+                            } else if (isNotBlockedEnd(column + 1, row - 1, null) &&
+                                    isNotBlockedEnd(column - 3, row + 3, null) &&
+                                    !isNotBlockedEnd(column - 4, row + 4, null)) {
+                                return new int[] {column + 1, row - 1};
+                            } else if (isNotBlockedEnd(column + 1, row - 1, null) &&
+                                    isNotBlockedEnd(column - 3, row + 3, null) &&
+                                    !isNotBlockedEnd(column + 2, row - 2, null)) {
+                                return new int[] {column - 3, row + 3};
+                            } else if (isNotBlockedEnd(column + 1, row - 1, null) &&
+                                    isNotBlockedEnd(column - 3, row + 3, null)) {
+                                return new int[] {column + 1, row - 1};
+                            } else if (isNotBlockedEnd(column + 1, row - 1, null) &&
+                                    isNotBlockedEnd(column + 2, row - 2, playerColor)) {
+                                return new int[] {column + 1, row - 1};
+                            } else if (isNotBlockedEnd(column - 3, row + 3, null) &&
+                                    isNotBlockedEnd(column - 4, row + 4, playerColor)) {
+                                return new int[] {column - 3, row + 3};
+                            }
+                        }
+
+                        if (score == 4) {
+                            // (_|B|X) O O O O _  ->  (_|B|X) O O O O X
+                            // X O O O O (_|B|X)  ->  O O O O O (_|B|X)
+                            if (isNotBlockedEnd(column + 1, row - 1)) {
+                                return new int[] {column + 1, row - 1};
+                            } else if (isNotBlockedEnd(column - 4, row + 4)) {
+                                return new int[] {column - 4, row + 4};
+                            }
+                        }
+
+                    } else {
+                        score = 0;
+                    }
+                    //Log.i("INFO", String.valueOf(column) + "," +  String.valueOf(row));
+                }
+            }
+            score = 0;
+            //Log.i("INFO", "SCORE: " + score);
+        }
+        return null;
+    }
 
 
 
