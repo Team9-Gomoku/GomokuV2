@@ -481,10 +481,10 @@ public class Board extends View {
     private int [] threatSequences () {
         int [] computerMove;
         computerMove = checkThreatHorizontal("WHITE");
-        /*
+
         if(computerMove == null) {
             computerMove = checkThreatVertical("WHITE");
-        }*/
+        }
 
         return computerMove;
     }
@@ -515,12 +515,28 @@ public class Board extends View {
                                         isNotBlockedEnd(column + 3, row, playerColor))) {
                             return new int [] {column + 1, row};
                         }
+                        // O O _ O O -> O O X O O
+                        if(isNotBlockedEnd(column - 2, row, null) &&
+                                isNotBlockedEnd(column - 3, row, playerColor) &&
+                                isNotBlockedEnd(column - 4, row, playerColor)) {
+                            return new int [] {column - 2, row};
+                        }
                     }
 
                     if (score == 3) {
+                        // O O O _ O -> O O O X O
+                        // O _ O O O -> O X O O O
                         // B _ O O O _   ->  B _ O O O X _
                         // _ _ O O O _ _ ->  _ _ O O O X _
+                        // X O O O _ O
+                        // O _ O O O X
                         if (isNotBlockedEnd(column + 1, row, null) &&
+                                isNotBlockedEnd(column + 2, row, playerColor)) {
+                            return new int [] {column + 1, row};
+                        } else if (isNotBlockedEnd(column - 3, row, null) &&
+                                isNotBlockedEnd(column - 4, row, playerColor)) {
+                            return new int [] {column - 3, row};
+                        } else if (isNotBlockedEnd(column + 1, row, null) &&
                                 isNotBlockedEnd(column - 3, row, null) &&
                                 !isNotBlockedEnd(column - 4, row, null)) {
                             return new int[] {column + 1, row};
@@ -531,6 +547,12 @@ public class Board extends View {
                         } else if (isNotBlockedEnd(column + 1, row, null) &&
                                 isNotBlockedEnd(column - 3, row, null)) {
                             return new int[] {column + 1, row};
+                        } else if (isNotBlockedEnd(column + 1, row, null) &&
+                                isNotBlockedEnd(column + 2, row, playerColor)) {
+                            return new int[] {column + 1, row};
+                        } else if (isNotBlockedEnd(column - 3, row, null) &&
+                                isNotBlockedEnd(column - 4, row, playerColor)) {
+                            return new int[] {column - 3, row};
                         }
                     }
 
@@ -560,48 +582,75 @@ public class Board extends View {
                 if (cellChecked[column][row] == playerColor && score < 4) {
                     score++;
 
-
-
-                    /*
                     if (score == 2) {
-                        //_ O _  O O _
-                        if(!isNotBlockedEnd(column, row+1) || !isNotBlockedEnd(column, row-2)) {
-                            continue;
-                        }
-                        if (isNotBlockedEnd(column, row - 3, playerColor) && isNotBlockedEnd(column, row-2) ) {
-                            int[] cellThreat = {column, row -2};
-                            return cellThreat;
+                        // (_|O) O _ O O _  -> (_|O) O X O O _
+                        if(isNotBlockedEnd(column, row + 1, null) &&
+                                isNotBlockedEnd(column, row - 2, null)  &&
+                                isNotBlockedEnd(column, row - 3, playerColor) &&
+                                (isNotBlockedEnd(column, row - 4, null) ||
+                                        isNotBlockedEnd(column, row - 4, playerColor))) {
+                            return new int [] {column, row - 2};
                         }
 
-                        //_ O O _  O _
-                        else if (isNotBlockedEnd(column, row + 2, playerColor) && isNotBlockedEnd(column, row + 1) ) {
-                            int[] cellThreat = {column, row + 1};
-                            return cellThreat;
+                        // _ O O _ O (_|X) -> _ O O X O (_|O)
+                        if(isNotBlockedEnd(column, row - 2, null) &&
+                                isNotBlockedEnd(column, row + 1, null)  &&
+                                isNotBlockedEnd(column, row + 2, playerColor) &&
+                                (isNotBlockedEnd(column, row + 3 , null) ||
+                                        isNotBlockedEnd(column, row + 3, playerColor))) {
+                            return new int [] {column, row + 1};
+                        }
+                        // O O _ O O -> O O X O O
+                        if(isNotBlockedEnd(column, row - 2, null) &&
+                                isNotBlockedEnd(column, row - 3, playerColor) &&
+                                isNotBlockedEnd(column, row - 4, playerColor)) {
+                            return new int [] {column, row - 2};
                         }
                     }
 
                     if (score == 3) {
-                        // _ O O O _
-                        if (isNotBlockedEnd(column, row + 1) && isNotBlockedEnd(column, row - 3)) {
-                            int[] cellThreat = {column, row + 1};
-                            return cellThreat;
+                        // O O O _ O -> O O O X O
+                        // O _ O O O -> O X O O O
+                        // B _ O O O _   ->  B _ O O O X _
+                        // _ _ O O O _ _ ->  _ _ O O O X _
+                        // X O O O _ O
+                        // O _ O O O X
+                        if (isNotBlockedEnd(column, row + 1, null) &&
+                                isNotBlockedEnd(column, row + 2, playerColor)) {
+                            return new int [] {column, row + 1};
+                        } else if (isNotBlockedEnd(column, row - 3, null) &&
+                                isNotBlockedEnd(column, row - 4, playerColor)) {
+                            return new int [] {column, row - 3};
+                        } else if (isNotBlockedEnd(column, row + 1, null) &&
+                                isNotBlockedEnd(column, row - 3, null) &&
+                                !isNotBlockedEnd(column, row - 4, null)) {
+                            return new int[] {column, row + 1};
+                        } else if (isNotBlockedEnd(column, row + 1, null) &&
+                                isNotBlockedEnd(column, row - 3, null) &&
+                                !isNotBlockedEnd(column, row + 2, null)) {
+                            return new int[] {column, row - 3};
+                        } else if (isNotBlockedEnd(column, row + 1, null) &&
+                                isNotBlockedEnd(column, row - 3, null)) {
+                            return new int[] {column, row + 1};
+                        } else if (isNotBlockedEnd(column, row + 1, null) &&
+                                isNotBlockedEnd(column, row + 2, playerColor)) {
+                            return new int[] {column, row + 1};
+                        } else if (isNotBlockedEnd(column, row - 3, null) &&
+                                isNotBlockedEnd(column, row - 4, playerColor)) {
+                            return new int[] {column, row - 3};
                         }
                     }
 
-                    // X O O O O _
-                    // _ O O O O X
-                    // _ O O O O _
+
                     if (score == 4) {
+                        // (_|B|X) O O O O _  ->  (_|B|X) O O O O X
+                        // X O O O O (_|B|X)  ->  O O O O O (_|B|X)
                         if (isNotBlockedEnd(column, row + 1)) {
-                            int[] cellThreat = {column, row + 1};
-                            return cellThreat;
+                            return new int[] {column, row + 1};
                         } else if (isNotBlockedEnd(column, row - 4)) {
-                            int[] cellThreat = {column, row - 4};
-                            return cellThreat;
+                            return new int[] {column, row - 4};
                         }
                     }
-                    */
-
                 } else {
                     score = 0;
                 }
@@ -609,6 +658,8 @@ public class Board extends View {
         }
         return null;
     }
+
+
 
 
     @Override
