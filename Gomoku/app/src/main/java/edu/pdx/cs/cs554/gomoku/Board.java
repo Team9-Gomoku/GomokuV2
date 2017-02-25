@@ -539,17 +539,42 @@ public class Board extends View {
         if(findWinner()) {
             return;
         }
-        computerMove();
+        computerMove(column, row);
     }
 
 
-    private void computerMove() {
+    private void computerMove(int column, int row) {
         int [] cellToPlace = threatSequences();
 
         if(cellToPlace != null) {
             Log.i("INFO", "DETECTED THREAT");
             cellChecked[cellToPlace[0]][cellToPlace[1]] = "BLACK";
+        } else if (cellToPlace == null) {
+            cellToPlace = NoThreatMove(column, row);
+            cellChecked[cellToPlace[0]][cellToPlace[1]] = "BLACK";
         }
+    }
+
+    private int [] NoThreatMove(int column, int row) {
+
+        if(isNotBlockedEnd(column + 1, row, null)) {
+            return new int [] {column + 1, row};
+        } else if (isNotBlockedEnd(column, row + 1, null)) {
+            return new int [] {column, row + 1};
+        } else if(isNotBlockedEnd(column + 1, row + 1, null)) {
+            return new int [] {column + 1, row + 1};
+        } else if (isNotBlockedEnd(column - 1, row + 1, null)) {
+            return new int [] {column - 1, row + 1};
+        } else if(isNotBlockedEnd(column - 1, row, null)) {
+            return new int [] {column - 1, row};
+        } else if (isNotBlockedEnd(column - 1, row - 1, null)) {
+            return new int [] {column - 1, row - 1};
+        } else if (isNotBlockedEnd(column, row - 1, null)) {
+            return new int [] {column, row - 1};
+        } else if (isNotBlockedEnd(column + 1, row - 1, null)) {
+            return new int [] {column + 1, row - 1};
+        }
+        return null;
     }
 
     private int [] threatSequences () {
@@ -567,9 +592,6 @@ public class Board extends View {
         if(computerMove == null) {
             computerMove = checkThreatLeftDiagonal("WHITE");
         }
-
-
-
         return computerMove;
     }
 
