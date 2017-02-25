@@ -13,12 +13,11 @@ public class Board extends View {
     protected int numColumns, numRows;
     protected int cellWidth, cellHeight;
     protected boolean winner = false;
-    protected GameMode mode = GameMode.STANDARD;
+    protected GameType gameType = GameType.STANDARD;
     private Paint blackPaint = new Paint();
     private Paint whitePaint = new Paint();
     protected String[][] cellChecked;
-    //private String mode2 = "OFFLINE";
-    private String mode2 = "AI";
+    private GameMode gameMode = GameMode.AI;
 
 
     //Player 1 (WHITE) , if activePlayer = 0
@@ -46,9 +45,9 @@ public class Board extends View {
         calculateDimensions();
     }
 
-    public void setMode(GameMode mode) {
-        this.mode = mode;
-        Log.i("INFO", "mode is set to " + this.mode);
+    public void setGameType(GameType gameType) {
+        this.gameType = gameType;
+        Log.i("INFO", "Game type is set to " + this.gameType);
     }
 
     @Override
@@ -146,8 +145,8 @@ public class Board extends View {
                         }
 
                         // checks OOOOOO (6x) or more
-                        if (mode.equals(GameMode.FREESTYLE) && isNotBlockedEnd(column+1, row, playerColor)) {
-                            Log.i("INFO", playerColor + " IS THE WINNER in freestyle mode");
+                        if (gameType.equals(GameType.FREESTYLE) && isNotBlockedEnd(column+1, row, playerColor)) {
+                            Log.i("INFO", playerColor + " IS THE WINNER in freestyle game type");
                             isWinner = true;
                             break;
                         }
@@ -193,8 +192,8 @@ public class Board extends View {
                         }
 
                         // checks OOOOOO (6x) or more
-                        if (mode.equals(GameMode.FREESTYLE) && isNotBlockedEnd(column, row+1, playerColor)) {
-                            Log.i("INFO", playerColor + " IS THE WINNER in freestyle mode");
+                        if (gameType.equals(GameType.FREESTYLE) && isNotBlockedEnd(column, row+1, playerColor)) {
+                            Log.i("INFO", playerColor + " IS THE WINNER in freestyle game type");
                             isWinner = true;
                             break;
                         }
@@ -240,8 +239,8 @@ public class Board extends View {
 
                             // checks OOOOOO (6x) or more
 
-                            if (mode.equals(GameMode.FREESTYLE) && isNotBlockedEnd(column+1, row-1, playerColor)) {
-                                Log.i("INFO", playerColor + " IS THE WINNER in freestyle mode");
+                            if (gameType.equals(GameType.FREESTYLE) && isNotBlockedEnd(column+1, row-1, playerColor)) {
+                                Log.i("INFO", playerColor + " IS THE WINNER in freestyle game type");
                                 isWinner = true;
                                 break;
                             }
@@ -295,8 +294,8 @@ public class Board extends View {
                             }
 
                             // checks OOOOOO (6x) or more
-                            if (mode.equals(GameMode.FREESTYLE) && isNotBlockedEnd(tmpCol+1, tmpRow+1, playerColor)) {
-                                Log.i("INFO", playerColor + " IS THE WINNER in freestyle mode");
+                            if (gameType.equals(GameType.FREESTYLE) && isNotBlockedEnd(tmpCol+1, tmpRow+1, playerColor)) {
+                                Log.i("INFO", playerColor + " IS THE WINNER in freestyle game type");
                                 isWinner = true;
                                 break;
                             }
@@ -384,9 +383,9 @@ public class Board extends View {
                 return false;
             }
 
-            if(mode2.equals("OFFLINE")){
+            if(gameMode.equals(GameMode.OFFLINE)){
                 OfflineMode(column, row);
-            } else if (mode2.equals("AI")) {
+            } else if (gameMode.equals(GameMode.AI)) {
                 AIMode(column, row);
             }
             invalidate();

@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         Board board = (Board) findViewById(R.id.board);
         board.setNumColumns(size);
         board.setNumRows(size);
-        board.setMode(GameMode.FREESTYLE);
+        board.setGameType(GameType.FREESTYLE);
 
         TimerView blackTimer = (TimerView) findViewById(R.id.timer_black);
         blackTimer.setPrefix("BLACK PLAYER ");
