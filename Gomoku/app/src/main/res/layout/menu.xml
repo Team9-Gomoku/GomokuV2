@@ -2,166 +2,157 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
 
+    android:id="@+id/menu"
     android:background = "@drawable/wood"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/menu">
+    android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/game_type"
         android:text="Game Type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="58dp"
-        android:id="@+id/textView"
+        android:layout_marginTop="30dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:singleLine="false"
         android:textColor="@android:color/black" />
 
-    <RadioButton
-        android:text="Standard"
-        android:layout_width="wrap_content"
+    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/game_type_buttons"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="27dp"
-        android:id="@+id/standard"
+        android:layout_below="@+id/game_type"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
 
-        style="@style/Widget.AppCompat.CompoundButton.RadioButton"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textColor="@android:color/black"
-        android:textAllCaps="true"
-        android:textColorLink="@android:color/black" />
+        <RadioButton
+            android:id="@+id/standard"
+            android:text="STANDARD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="50dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:checked="true"
+            android:textColor="@android:color/black" />
 
-    <RadioButton
-        android:text="Freestyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/standard"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="62dp"
-        android:id="@+id/freestyle"
-
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textColorLink="@android:color/black"
-        android:textAllCaps="true"
-        android:textColor="@android:color/black" />
-
-    <RadioButton
-        android:text="Offline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/offline"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:layout_alignBaseline="@+id/online"
-        android:layout_alignBottom="@+id/online"
-        android:layout_alignStart="@+id/standard"
-        android:textAllCaps="true"
-        android:textColorLink="@android:color/black"
-        android:textColor="@android:color/black" />
-
-    <RadioButton
-        android:text="AI"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/ai"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:layout_marginStart="20dp"
-        android:layout_below="@+id/textView2"
-        android:layout_toEndOf="@+id/textView"
-        android:layout_marginTop="27dp"
-        android:textAllCaps="true"
-        android:textColorLink="@android:color/black" />
-
-    <RadioButton
-        android:text="Online"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/online"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:layout_alignBaseline="@+id/ai"
-        android:layout_alignBottom="@+id/ai"
-        android:layout_centerHorizontal="true"
-        android:textColorLink="@android:color/black"
-        android:textAllCaps="true" />
+        <RadioButton
+            android:id="@+id/freestyle"
+            android:text="FREESTYLE"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:layout_marginLeft="35dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@android:color/black" />
+    </RadioGroup>
 
     <TextView
+        android:id="@+id/mode"
         android:text="Mode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView2"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:layout_below="@+id/freestyle"
-
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/game_type_buttons"
         android:layout_centerHorizontal="true"
-        android:textColorLink="@android:color/black"
         android:textColor="@android:color/black" />
 
+    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/mode_buttons"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mode"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/offline"
+            android:text="OFFLINE"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginLeft="40dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:checked="true"
+            android:textColor="@android:color/black" />
+
+        <RadioButton
+            android:id="@+id/ai"
+            android:text="AI"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginLeft="25dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+        <RadioButton
+            android:id="@+id/online"
+            android:text="ONLINE"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginLeft="25dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+    </RadioGroup>
+
     <TextView
+        android:id="@+id/board_size"
         android:text="Board Size"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/online"
+        android:layout_below="@+id/mode_buttons"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="26dp"
-        android:id="@+id/textView3"
+        android:layout_marginTop="30dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColorLink="@android:color/black"
         android:textColor="@android:color/black" />
 
-    <RadioButton
-        android:id="@+id/ten"
-        android:text="10 x 10"
-        android:onClick="createBoard10"
-        android:layout_width="wrap_content"
+    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/board_size_buttons"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView3"
-        android:layout_alignEnd="@+id/standard"
-        android:layout_marginTop="13dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textAllCaps="false"
-        android:textColorLink="@android:color/black" />
+        android:layout_below="@+id/board_size"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/ten"
+            android:text="10 x 10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginLeft="40dp" />
 
-    <RadioButton
-        android:id="@+id/fifteen"
-        android:text="15 x 15"
-        android:onClick="createBoard15"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:layout_alignBaseline="@+id/ten"
-        android:layout_alignBottom="@+id/ten"
-        android:layout_alignStart="@+id/online"
-        android:layout_marginStart="15dp"
-        android:textColorLink="@android:color/black" />
+        <RadioButton
+            android:id="@+id/fifteen"
+            android:text="15 x 15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp" />
 
-    <RadioButton
-        android:id="@+id/twenty"
-        android:text="20 x 20"
-        android:onClick="createBoard20"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/fifteen"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="13dp"
-        android:textColorLink="@android:color/black" />
+        <RadioButton
+            android:id="@+id/twenty"
+            android:text="20 x 20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:checked="true" />
+    </RadioGroup>
 
-<!--
     <Button
+        android:id="@+id/start"
         android:text="START"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/fifteen"
-        android:layout_alignStart="@+id/online"
-        android:layout_marginTop="45dp"
-        android:id="@+id/play"
-        android:onClick="playGame"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColorLink="@android:color/black"
+        android:layout_below="@+id/board_size_buttons"
+        android:layout_marginTop="30dp"
         android:textColor="@android:color/black"
-        android:textColorHighlight="@android:color/black" /> -->
+        android:layout_centerHorizontal="true"
+        android:onClick="startGame" />
 
 
 </RelativeLayout>
