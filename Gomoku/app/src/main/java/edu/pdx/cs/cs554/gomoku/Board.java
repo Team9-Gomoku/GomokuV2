@@ -50,6 +50,11 @@ public class Board extends View {
         Log.i("INFO", "Game type is set to " + this.gameType);
     }
 
+    public void setGameMode(GameMode gameMode) {
+        this.gameMode = gameMode;
+        Log.i("INFO", "Game mode is set to " + this.gameMode);
+    }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);

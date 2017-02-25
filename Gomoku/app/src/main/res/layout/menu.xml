@@ -34,6 +34,7 @@
             android:layout_marginStart="50dp"
             android:layout_marginLeft="50dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:checked="true"
             android:textColor="@android:color/black" />
 
         <RadioButton
@@ -74,6 +75,7 @@
             android:layout_marginStart="40dp"
             android:layout_marginLeft="40dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:checked="true"
             android:textColor="@android:color/black" />
 
         <RadioButton
@@ -118,7 +120,6 @@
         <RadioButton
             android:id="@+id/ten"
             android:text="10 x 10"
-            android:onClick="createBoard10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
@@ -127,7 +128,6 @@
         <RadioButton
             android:id="@+id/fifteen"
             android:text="15 x 15"
-            android:onClick="createBoard15"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -136,11 +136,11 @@
         <RadioButton
             android:id="@+id/twenty"
             android:text="20 x 20"
-            android:onClick="createBoard20"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp" />
+            android:layout_marginLeft="20dp"
+            android:checked="true" />
     </RadioGroup>
 
     <Button
@@ -151,7 +151,8 @@
         android:layout_below="@+id/board_size_buttons"
         android:layout_marginTop="30dp"
         android:textColor="@android:color/black"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="startGame" />
 
 
 </RelativeLayout>
