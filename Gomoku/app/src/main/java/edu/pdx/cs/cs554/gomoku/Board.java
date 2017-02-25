@@ -738,7 +738,7 @@ public class Board extends View {
 
     private int [] threatSequences () {
         int [] computerMove = null;
-        /*
+
         computerMove = checkThreatHorizontal("WHITE");
 
         if(computerMove == null) {
@@ -751,7 +751,7 @@ public class Board extends View {
 
         if(computerMove == null) {
             computerMove = checkThreatLeftDiagonal("WHITE");
-        }*/
+        }
         return computerMove;
     }
 
