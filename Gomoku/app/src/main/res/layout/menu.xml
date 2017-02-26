@@ -184,6 +184,7 @@
         android:inputType="textPersonName"
         android:text=""
         android:layout_alignBaseline="@id/white_player_label"
+        android:backgroundTint="@android:color/white"
         android:ems="6" />
 
     <Button

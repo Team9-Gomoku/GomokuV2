@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -68,10 +69,17 @@ public class MainActivity extends AppCompatActivity {
         board.setGameMode(gameMode);
 
         TimerView blackTimer = (TimerView) findViewById(R.id.timer_black);
-        blackTimer.setPrefix("BLACK PLAYER ");
-        blackTimer.start();
-
         TimerView whiteTimer = (TimerView) findViewById(R.id.timer_white);
-        whiteTimer.setPrefix("WHITE PLAYER ");
+        if (gameMode.equals(GameMode.AI)) {
+            // RelativeLayout parent = (RelativeLayout) findViewById(R.id.activity_main);
+            // parent.removeView(blackTimer);
+            // parent.removeView(whiteTimer);
+            blackTimer.setVisibility(View.GONE);
+            whiteTimer.setVisibility(View.GONE);
+        } else {
+            blackTimer.setPrefix("BLACK PLAYER ");
+            blackTimer.start();
+            whiteTimer.setPrefix("WHITE PLAYER ");
+        }
     }
 }
