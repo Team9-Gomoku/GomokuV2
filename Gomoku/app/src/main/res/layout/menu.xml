@@ -150,6 +150,7 @@
         android:layout_marginLeft="40dp"
         android:layout_marginTop="20dp"
         android:textColor="@android:color/black"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:layout_below="@+id/board_size_buttons" />
 
     <EditText
@@ -173,6 +174,7 @@
         android:layout_alignLeft="@id/black_player_label"
         android:layout_marginTop="20dp"
         android:textColor="@android:color/white"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:layout_below="@+id/black_player_label" />
 
     <EditText

@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 
 public class Board extends View {
     protected int numColumns, numRows;
@@ -17,7 +18,7 @@ public class Board extends View {
     private Paint blackPaint = new Paint();
     private Paint whitePaint = new Paint();
     protected String[][] cellChecked;
-    private GameMode gameMode = GameMode.AI;
+    private GameMode gameMode = GameMode.OFFLINE;
 
 
     //Player 1 (WHITE) , if activePlayer = 0
@@ -74,12 +75,6 @@ public class Board extends View {
         invalidate();
     }
 
-    private void resetBoard() {
-        cellChecked = new String[numColumns][numRows];
-        blockEdgeBoard();
-        invalidate();
-    }
-
     //Put invisible stones on the edge of the board
     //So black and white cannot be placed on board edge
     private void blockEdgeBoard() {
@@ -97,18 +92,19 @@ public class Board extends View {
 
     //=========CHECK WINNER=============
     private boolean findWinner() {
-        winner =  checkHorizontal("WHITE") ||
-                checkHorizontal("BLACK") ||
-                checkVertical("WHITE") ||
-                checkVertical("BLACK") ||
-                checkLeftDiagonal("WHITE") ||
-                checkLeftDiagonal("BLACK") ||
-                checkRightDiagonal("WHITE") ||
-                checkRightDiagonal("BLACK");
+        boolean blackWins = checkHorizontal("BLACK") || checkVertical("BLACK") ||
+            checkLeftDiagonal("BLACK") || checkRightDiagonal("BLACK");
+        boolean whiteWins =  checkHorizontal("WHITE") || checkVertical("WHITE") ||
+            checkLeftDiagonal("WHITE") || checkRightDiagonal("WHITE");
 
+        winner = blackWins || whiteWins;
         if (winner) {
             ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_black)).pause();
             ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_white)).pause();
+            String msg = (blackWins ? "Black" : "White") + " player wins!  Click BACK TO MENU.";
+            TextView winnerMessage = (TextView) ((MainActivity) getContext()).findViewById(R.id.winner_message);
+            winnerMessage.setText(msg);
+            winnerMessage.setVisibility(View.VISIBLE);
         }
 
         return winner;
@@ -282,7 +278,6 @@ public class Board extends View {
                 if (tmpRow<0) {
                     tmpCol++;
                     tmpRow++;
-                    continue;
                 } else {
                     if (cellChecked[tmpCol][tmpRow] == playerColor && score < 5) {
                         score++;
@@ -438,7 +433,7 @@ public class Board extends View {
 
     private void computerMove(int column, int row) {
 
-        int [] cellToPlace = null;
+        int[] cellToPlace = null;
 
         cellToPlace = ComputerWinningStep("WHITE");
         if (cellToPlace != null) {
@@ -458,8 +453,8 @@ public class Board extends View {
         }
     }
 
-    private int [] ComputerWinningStep(String playerColor) {
-        int [] computerMove;
+    private int[] ComputerWinningStep(String playerColor) {
+        int[] computerMove;
 
         computerMove = checkComputerWinningStepHorizontal(playerColor);
 
@@ -479,7 +474,7 @@ public class Board extends View {
     }
 
 
-    private int [] checkComputerWinningStepHorizontal(String playerColor) {
+    private int[] checkComputerWinningStepHorizontal(String playerColor) {
         for (int row = 0; row < numRows; row++) {
             int score = 0;
             for (int column = 0; column < numColumns; column++) {
@@ -492,7 +487,7 @@ public class Board extends View {
                         if (isNotBlockedEnd(column - 2, row, null) &&
                                 isNotBlockedEnd(column - 3, row, playerColor) &&
                                 isNotBlockedEnd(column - 4, row, playerColor)) {
-                            return new int [] {column - 2, row};
+                            return new int[] {column - 2, row};
                         }
                     }
 
@@ -503,10 +498,10 @@ public class Board extends View {
                         // O _ O O O -> O O O O O
                         if (isNotBlockedEnd(column + 1, row, null) &&
                                 isNotBlockedEnd(column + 2, row, playerColor)) {
-                            return new int [] {column + 1, row};
+                            return new int[] {column + 1, row};
                         } else if (isNotBlockedEnd(column - 3, row, null) &&
                                 isNotBlockedEnd(column - 4, row, playerColor)) {
-                            return new int [] {column - 3, row};
+                            return new int[] {column - 3, row};
                         } else if (isNotBlockedEnd(column + 1, row, null) &&
                                 isNotBlockedEnd(column + 2, row, playerColor)) {
                             return new int[] {column + 1, row};
@@ -517,9 +512,9 @@ public class Board extends View {
                         // (_|B) O O O O _ -> O O O O O
                         // _ O O O O B-> O O O O O
                         if (isNotBlockedEnd(column + 1, row, null)) {
-                            return new int [] {column + 1, row};
+                            return new int[] {column + 1, row};
                         } else if (isNotBlockedEnd(column - 4, row, null)) {
-                            return new int [] {column - 4, row};
+                            return new int[] {column - 4, row};
                         }
                     }
                 } else {
@@ -530,7 +525,7 @@ public class Board extends View {
         return null;
     }
 
-    private int [] checkComputerWinningStepVertical(String playerColor) {
+    private int[] checkComputerWinningStepVertical(String playerColor) {
         for (int column = 0; column < numColumns; column++) {
             int score = 0;
             for (int row = 0; row < numRows; row++) {
@@ -543,7 +538,7 @@ public class Board extends View {
                         if (isNotBlockedEnd(column, row - 2, null) &&
                                 isNotBlockedEnd(column, row - 3, playerColor) &&
                                 isNotBlockedEnd(column, row - 4, playerColor)) {
-                            return new int [] {column, row - 2};
+                            return new int[] {column, row - 2};
                         }
                     }
 
@@ -554,10 +549,10 @@ public class Board extends View {
                         // O _ O O O -> O O O O O
                         if (isNotBlockedEnd(column, row + 1, null) &&
                                 isNotBlockedEnd(column, row + 2, playerColor)) {
-                            return new int [] {column, row + 1};
+                            return new int[] {column, row + 1};
                         } else if (isNotBlockedEnd(column, row - 3, null) &&
                                 isNotBlockedEnd(column, row - 4, playerColor)) {
-                            return new int [] {column, row - 3};
+                            return new int[] {column, row - 3};
                         } else if (isNotBlockedEnd(column + 1, row + 1, null) &&
                                 isNotBlockedEnd(column, row + 2, playerColor)) {
                             return new int[] {column, row + 1};
@@ -568,9 +563,9 @@ public class Board extends View {
                         // (_|B) O O O O _ -> O O O O O
                         // _ O O O O B-> O O O O O
                         if (isNotBlockedEnd(column, row + 1, null)) {
-                            return new int [] {column, row + 1};
+                            return new int[] {column, row + 1};
                         } else if (isNotBlockedEnd(column, row - 4, null)) {
-                            return new int [] {column, row - 4};
+                            return new int[] {column, row - 4};
                         }
                     }
                 } else {
@@ -581,7 +576,7 @@ public class Board extends View {
         return null;
     }
 
-    private int [] checkComputerWinningStepRightDiagonal(String playerColor) {
+    private int[] checkComputerWinningStepRightDiagonal(String playerColor) {
         for( int k = 0 ; k < numColumns * 2 ; k++ ) {
             int score = 0;
             for( int column = 0 ; column <= k ; column++ ) {
@@ -596,7 +591,7 @@ public class Board extends View {
                             if (isNotBlockedEnd(column - 2, row + 2, null) &&
                                     isNotBlockedEnd(column - 3, row + 3, playerColor) &&
                                     isNotBlockedEnd(column - 4, row + 4, playerColor)) {
-                                return new int [] {column - 2, row + 2};
+                                return new int[] {column - 2, row + 2};
                             }
                         }
 
@@ -607,10 +602,10 @@ public class Board extends View {
                             // O _ O O O X
                             if (isNotBlockedEnd(column + 1, row - 1, null) &&
                                     isNotBlockedEnd(column + 2, row - 2, playerColor)) {
-                                return new int [] {column + 1, row - 1};
+                                return new int[] {column + 1, row - 1};
                             } else if (isNotBlockedEnd(column - 3, row + 3, null) &&
                                     isNotBlockedEnd(column - 4, row + 4, playerColor)) {
-                                return new int [] {column - 3, row + 3};
+                                return new int[] {column - 3, row + 3};
                             } else if (isNotBlockedEnd(column + 1, row - 1, null) &&
                                     isNotBlockedEnd(column + 2, row - 2, playerColor)) {
                                 return new int[] {column + 1, row - 1};
@@ -664,7 +659,7 @@ public class Board extends View {
                             if (isNotBlockedEnd(tmpCol - 2, tmpRow - 2, null) &&
                                     isNotBlockedEnd(tmpCol - 3, tmpRow - 3, playerColor) &&
                                     isNotBlockedEnd(tmpCol - 4, tmpRow - 4, playerColor)) {
-                                return new int [] {tmpCol - 2, tmpRow - 2};
+                                return new int[] {tmpCol - 2, tmpRow - 2};
                             }
                         }
 
@@ -675,10 +670,10 @@ public class Board extends View {
                             // O _ O O O X
                             if (isNotBlockedEnd(tmpCol + 1, tmpRow + 1, null) &&
                                     isNotBlockedEnd(tmpCol + 2, tmpRow + 2, playerColor)) {
-                                return new int [] {tmpCol + 1, tmpRow + 1};
+                                return new int[] {tmpCol + 1, tmpRow + 1};
                             } else if (isNotBlockedEnd(tmpCol - 3, tmpRow - 3, null) &&
                                     isNotBlockedEnd(tmpCol - 4, tmpRow - 4, playerColor)) {
-                                return new int [] {tmpCol - 3, tmpRow - 3};
+                                return new int[] {tmpCol - 3, tmpRow - 3};
                             } else if (isNotBlockedEnd(tmpCol + 1, tmpRow + 1, null) &&
                                     isNotBlockedEnd(tmpCol + 2, tmpRow + 2, playerColor)) {
                                 return new int[] {tmpCol + 1, tmpRow + 1};
@@ -717,30 +712,30 @@ public class Board extends View {
 
 
 
-    private int [] NoThreatMove(int column, int row) {
+    private int[] NoThreatMove(int column, int row) {
 
         if (isNotBlockedEnd(column + 1, row, null)) {
-            return new int [] {column + 1, row};
+            return new int[] {column + 1, row};
         } else if (isNotBlockedEnd(column, row + 1, null)) {
-            return new int [] {column, row + 1};
+            return new int[] {column, row + 1};
         } else if (isNotBlockedEnd(column + 1, row + 1, null)) {
-            return new int [] {column + 1, row + 1};
+            return new int[] {column + 1, row + 1};
         } else if (isNotBlockedEnd(column - 1, row + 1, null)) {
-            return new int [] {column - 1, row + 1};
+            return new int[] {column - 1, row + 1};
         } else if (isNotBlockedEnd(column - 1, row, null)) {
-            return new int [] {column - 1, row};
+            return new int[] {column - 1, row};
         } else if (isNotBlockedEnd(column - 1, row - 1, null)) {
-            return new int [] {column - 1, row - 1};
+            return new int[] {column - 1, row - 1};
         } else if (isNotBlockedEnd(column, row - 1, null)) {
-            return new int [] {column, row - 1};
+            return new int[] {column, row - 1};
         } else if (isNotBlockedEnd(column + 1, row - 1, null)) {
-            return new int [] {column + 1, row - 1};
+            return new int[] {column + 1, row - 1};
         }
         return null;
     }
 
-    private int [] threatSequences () {
-        int [] computerMove = null;
+    private int[] threatSequences () {
+        int[] computerMove = null;
 
         computerMove = checkThreatHorizontal("BLACK");
 
@@ -758,7 +753,7 @@ public class Board extends View {
         return computerMove;
     }
 
-    private int [] checkThreatHorizontal(String playerColor) {
+    private int[] checkThreatHorizontal(String playerColor) {
         for (int row = 0; row < numRows; row++) {
             int score = 0;
             for (int column = 0; column < numColumns; column++) {
@@ -773,7 +768,7 @@ public class Board extends View {
                                 isNotBlockedEnd(column - 3, row, playerColor) &&
                                 (isNotBlockedEnd(column - 4, row, null) ||
                                         isNotBlockedEnd(column - 4, row, playerColor))) {
-                            return new int [] {column - 2, row};
+                            return new int[] {column - 2, row};
                         }
 
                         // _ O O _ O (_|X) -> _ O O X O (_|O)
@@ -782,13 +777,13 @@ public class Board extends View {
                                 isNotBlockedEnd(column + 2, row, playerColor) &&
                                 (isNotBlockedEnd(column + 3, row, null) ||
                                         isNotBlockedEnd(column + 3, row, playerColor))) {
-                            return new int [] {column + 1, row};
+                            return new int[] {column + 1, row};
                         }
                         // O O _ O O -> O O X O O
                         if (isNotBlockedEnd(column - 2, row, null) &&
                                 isNotBlockedEnd(column - 3, row, playerColor) &&
                                 isNotBlockedEnd(column - 4, row, playerColor)) {
-                            return new int [] {column - 2, row};
+                            return new int[] {column - 2, row};
                         }
                     }
 
@@ -801,10 +796,10 @@ public class Board extends View {
                         // O _ O O O X
                         if (isNotBlockedEnd(column + 1, row, null) &&
                                 isNotBlockedEnd(column + 2, row, playerColor)) {
-                            return new int [] {column + 1, row};
+                            return new int[] {column + 1, row};
                         } else if (isNotBlockedEnd(column - 3, row, null) &&
                                 isNotBlockedEnd(column - 4, row, playerColor)) {
-                            return new int [] {column - 3, row};
+                            return new int[] {column - 3, row};
                         } else if (isNotBlockedEnd(column + 1, row, null) &&
                                 isNotBlockedEnd(column - 3, row, null) &&
                                 !isNotBlockedEnd(column - 4, row, null)) {
@@ -843,7 +838,7 @@ public class Board extends View {
         return null;
     }
 
-    private int [] checkThreatVertical(String playerColor) {
+    private int[] checkThreatVertical(String playerColor) {
         for (int column = 0; column < numColumns; column++) {
             int score = 0;
             for (int row = 0; row < numRows; row++) {
@@ -858,7 +853,7 @@ public class Board extends View {
                                 isNotBlockedEnd(column, row - 3, playerColor) &&
                                 (isNotBlockedEnd(column, row - 4, null) ||
                                         isNotBlockedEnd(column, row - 4, playerColor))) {
-                            return new int [] {column, row - 2};
+                            return new int[] {column, row - 2};
                         }
 
                         // _ O O _ O (_|X) -> _ O O X O (_|O)
@@ -867,13 +862,13 @@ public class Board extends View {
                                 isNotBlockedEnd(column, row + 2, playerColor) &&
                                 (isNotBlockedEnd(column, row + 3 , null) ||
                                         isNotBlockedEnd(column, row + 3, playerColor))) {
-                            return new int [] {column, row + 1};
+                            return new int[] {column, row + 1};
                         }
                         // O O _ O O -> O O X O O
                         if (isNotBlockedEnd(column, row - 2, null) &&
                                 isNotBlockedEnd(column, row - 3, playerColor) &&
                                 isNotBlockedEnd(column, row - 4, playerColor)) {
-                            return new int [] {column, row - 2};
+                            return new int[] {column, row - 2};
                         }
                     }
 
@@ -886,10 +881,10 @@ public class Board extends View {
                         // O _ O O O X
                         if (isNotBlockedEnd(column, row + 1, null) &&
                                 isNotBlockedEnd(column, row + 2, playerColor)) {
-                            return new int [] {column, row + 1};
+                            return new int[] {column, row + 1};
                         } else if (isNotBlockedEnd(column, row - 3, null) &&
                                 isNotBlockedEnd(column, row - 4, playerColor)) {
-                            return new int [] {column, row - 3};
+                            return new int[] {column, row - 3};
                         } else if (isNotBlockedEnd(column, row + 1, null) &&
                                 isNotBlockedEnd(column, row - 3, null) &&
                                 !isNotBlockedEnd(column, row - 4, null)) {
@@ -930,7 +925,7 @@ public class Board extends View {
 
 
     //Check right diagonal ↗↗↗↗↗↗
-    private int [] checkThreatRightDiagonal(String playerColor) {
+    private int[] checkThreatRightDiagonal(String playerColor) {
         for( int k = 0 ; k < numColumns * 2 ; k++ ) {
             int score = 0;
             for( int column = 0 ; column <= k ; column++ ) {
@@ -948,7 +943,7 @@ public class Board extends View {
                                     isNotBlockedEnd(column - 3, row + 3, playerColor) &&
                                     (isNotBlockedEnd(column - 4, row + 4, null) ||
                                             isNotBlockedEnd(column - 4, row + 4, playerColor))) {
-                                return new int [] {column - 2, row + 2};
+                                return new int[] {column - 2, row + 2};
                             }
 
                             // _ O O _ O (_|X) -> _ O O X O (_|O)
@@ -957,7 +952,7 @@ public class Board extends View {
                                     isNotBlockedEnd(column + 2, row - 2, playerColor) &&
                                     (isNotBlockedEnd(column + 3, row - 3 , null) ||
                                             isNotBlockedEnd(column + 3, row - 3, playerColor))) {
-                                return new int [] {column + 1, row - 1};
+                                return new int[] {column + 1, row - 1};
                             }
 
 
@@ -965,7 +960,7 @@ public class Board extends View {
                             if (isNotBlockedEnd(column - 2, row + 2, null) &&
                                     isNotBlockedEnd(column - 3, row + 3, playerColor) &&
                                     isNotBlockedEnd(column - 4, row + 4, playerColor)) {
-                                return new int [] {column - 2, row + 2};
+                                return new int[] {column - 2, row + 2};
                             }
                         }
 
@@ -979,10 +974,10 @@ public class Board extends View {
                             // O _ O O O X
                             if (isNotBlockedEnd(column + 1, row - 1, null) &&
                                     isNotBlockedEnd(column + 2, row - 2, playerColor)) {
-                                return new int [] {column + 1, row - 1};
+                                return new int[] {column + 1, row - 1};
                             } else if (isNotBlockedEnd(column - 3, row + 3, null) &&
                                     isNotBlockedEnd(column - 4, row + 4, playerColor)) {
-                                return new int [] {column - 3, row + 3};
+                                return new int[] {column - 3, row + 3};
                             } else if (isNotBlockedEnd(column + 1, row - 1, null) &&
                                     isNotBlockedEnd(column - 3, row + 3, null) &&
                                     !isNotBlockedEnd(column - 4, row + 4, null)) {
@@ -1025,7 +1020,7 @@ public class Board extends View {
         return null;
     }
 
-    private int [] checkThreatLeftDiagonal(String playerColor) {
+    private int[] checkThreatLeftDiagonal(String playerColor) {
         int score = 0;
 
         //number of reverse diagonal
@@ -1051,7 +1046,7 @@ public class Board extends View {
                                     isNotBlockedEnd(tmpCol - 3, tmpRow - 3, playerColor) &&
                                     (isNotBlockedEnd(tmpCol - 4, tmpRow - 4, null) ||
                                             isNotBlockedEnd(tmpCol - 4, tmpRow - 4, playerColor))) {
-                                return new int [] {tmpCol - 2, tmpRow - 2};
+                                return new int[] {tmpCol - 2, tmpRow - 2};
                             }
 
                             // _ O O _ O (_|X) -> _ O O X O (_|O)
@@ -1060,13 +1055,13 @@ public class Board extends View {
                                     isNotBlockedEnd(tmpCol + 2, tmpRow + 2, playerColor) &&
                                     (isNotBlockedEnd(tmpCol + 3, tmpRow + 3, null) ||
                                             isNotBlockedEnd(tmpCol + 3, tmpRow + 3, playerColor))) {
-                                return new int [] {tmpCol + 1, tmpRow + 1};
+                                return new int[] {tmpCol + 1, tmpRow + 1};
                             }
                             // O O _ O O -> O O X O O
                             if (isNotBlockedEnd(tmpCol - 2, tmpRow - 2, null) &&
                                     isNotBlockedEnd(tmpCol - 3, tmpRow - 3, playerColor) &&
                                     isNotBlockedEnd(tmpCol - 4, tmpRow - 4, playerColor)) {
-                                return new int [] {tmpCol - 2, tmpRow - 2};
+                                return new int[] {tmpCol - 2, tmpRow - 2};
                             }
                         }
 
@@ -1079,10 +1074,10 @@ public class Board extends View {
                             // O _ O O O X
                             if (isNotBlockedEnd(tmpCol + 1, tmpRow + 1, null) &&
                                     isNotBlockedEnd(tmpCol + 2, tmpRow + 2, playerColor)) {
-                                return new int [] {tmpCol + 1, tmpRow + 1};
+                                return new int[] {tmpCol + 1, tmpRow + 1};
                             } else if (isNotBlockedEnd(tmpCol - 3, tmpRow - 3, null) &&
                                     isNotBlockedEnd(tmpCol - 4, tmpRow - 4, playerColor)) {
-                                return new int [] {tmpCol - 3, tmpRow - 3};
+                                return new int[] {tmpCol - 3, tmpRow - 3};
                             } else if (isNotBlockedEnd(tmpCol + 1, tmpRow + 1, null) &&
                                     isNotBlockedEnd(tmpCol - 3, tmpRow - 3, null) &&
                                     !isNotBlockedEnd(tmpCol - 4, tmpRow - 4, null)) {
