@@ -12,7 +12,7 @@
         android:text="Game Type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
@@ -54,7 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:layout_below="@+id/game_type_buttons"
         android:layout_centerHorizontal="true"
         android:textColor="@android:color/black" />
@@ -92,8 +92,6 @@
             android:text="ONLINE"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="50dp"
-            android:layout_marginRight="50dp"
             android:layout_marginStart="25dp"
             android:layout_marginLeft="25dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
@@ -106,7 +104,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/mode_buttons"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="@android:color/black" />
 
@@ -143,16 +141,60 @@
             android:checked="true" />
     </RadioGroup>
 
+    <TextView
+        android:id="@+id/black_player_label"
+        android:text="BLACK PLAYER NAME"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="20dp"
+        android:textColor="@android:color/black"
+        android:layout_below="@+id/board_size_buttons" />
+
+    <EditText
+        android:id="@+id/black_player"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/black_player_label"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:inputType="textPersonName"
+        android:text=""
+        android:layout_alignBaseline="@id/black_player_label"
+        android:ems="6" />
+
+    <TextView
+        android:id="@+id/white_player_label"
+        android:text="WHITE PLAYER NAME"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/black_player_label"
+        android:layout_alignLeft="@id/black_player_label"
+        android:layout_marginTop="20dp"
+        android:textColor="@android:color/white"
+        android:layout_below="@+id/black_player_label" />
+
+    <EditText
+        android:id="@+id/white_player"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/black_player"
+        android:layout_alignLeft="@id/black_player"
+        android:inputType="textPersonName"
+        android:text=""
+        android:layout_alignBaseline="@id/white_player_label"
+        android:ems="6" />
+
     <Button
         android:id="@+id/start"
         android:text="START"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/board_size_buttons"
-        android:layout_marginTop="30dp"
+        android:layout_below="@+id/white_player_label"
+        android:layout_marginTop="20dp"
         android:textColor="@android:color/black"
         android:layout_centerHorizontal="true"
         android:onClick="startGame" />
-
 
 </RelativeLayout>

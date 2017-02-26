@@ -84,7 +84,7 @@ public class Board extends View {
     //So black and white cannot be placed on board edge
     private void blockEdgeBoard() {
         for(int column = 0; column < numColumns; column++) {
-            //Log.i("INFO", String.valueOf(column) + "," + String.valueOf(0));
+            //Log.i("INFO", column + "," + 0);
             cellChecked[column][0] = "BLANK";
             cellChecked[column][numRows-1] = "BLANK";
         }
@@ -257,7 +257,7 @@ public class Board extends View {
                         continue;
                     }
                     isWinner = false;
-                    //Log.i("INFO", String.valueOf(column) + "," +  String.valueOf(row));
+                    //Log.i("INFO", column + "," + row);
                     score = 0;
 
                 }
@@ -286,7 +286,7 @@ public class Board extends View {
                 }else{
                     if (cellChecked[tmpCol][tmpRow] == playerColor && score < 5) {
                         score++;
-                        //Log.i("INFO", "SCORE: " + String.valueOf(score));
+                        //Log.i("INFO", "SCORE: " + score);
                         if(score == 5){
                             //CHECK if there's NO 6 in a row AND
                             // (left ends is NULL OR right ends is NULL)
@@ -312,7 +312,7 @@ public class Board extends View {
                         isWinner = false;
                     }
 
-                    //Log.i("INFO", String.valueOf(tmpCol) + "," +  String.valueOf(tmpRow));
+                    //Log.i("INFO", tmpCol + "," + tmpRow);
                     tmpCol++;
                     tmpRow++;
 
@@ -415,7 +415,7 @@ public class Board extends View {
                 ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_white)).start();
             }
         }
-        Log.i("INFO", cellChecked[column][row] + ": "+ String.valueOf(column) + " , " + String.valueOf(row));
+        Log.i("INFO", cellChecked[column][row] + ": "+ column + " , " + row);
     }
 
 
@@ -429,7 +429,7 @@ public class Board extends View {
     private void AIMode(int column, int row) {
         //Alternate the stone color
         cellChecked[column][row] = "WHITE";
-        Log.i("INFO", cellChecked[column][row] + ": "+ String.valueOf(column) + " , " + String.valueOf(row));
+        Log.i("INFO", cellChecked[column][row] + ": "+ column + " , " + row);
         if(findWinner()) {
             return;
         }
@@ -1017,7 +1017,7 @@ public class Board extends View {
                     } else {
                         score = 0;
                     }
-                    //Log.i("INFO", String.valueOf(column) + "," +  String.valueOf(row));
+                    //Log.i("INFO", column + "," +  row);
                 }
             }
             score = 0;
@@ -1119,7 +1119,7 @@ public class Board extends View {
                         score = 0;
                     }
 
-                    //Log.i("INFO", String.valueOf(tmpCol) + "," +  String.valueOf(tmpRow));
+                    //Log.i("INFO", tmpCol + "," + tmpRow);
                     tmpCol++;
                     tmpRow++;
 
