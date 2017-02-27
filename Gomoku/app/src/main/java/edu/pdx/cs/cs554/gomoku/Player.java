@@ -2,14 +2,29 @@ package edu.pdx.cs.cs554.gomoku;
 
 public class Player {
     private final String name;
+    private int score;
+    private final boolean isBlack;
 
-    private int wins;
-
-    private int losses;
-
-    private int draws;
-
-    public Player(String name) {
+    public Player(String name, int score, boolean isBlack) {
         this.name = name;
+        this.score = score;
+        this.isBlack = isBlack;
     }
+
+    public boolean isWhite() {
+        return !isBlack;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void incrementScore() {
+        score++;
+    }
+
 }

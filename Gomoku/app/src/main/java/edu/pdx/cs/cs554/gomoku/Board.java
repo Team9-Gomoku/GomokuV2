@@ -1,6 +1,7 @@
 package edu.pdx.cs.cs554.gomoku;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -13,17 +14,15 @@ import android.widget.TextView;
 public class Board extends View {
     protected int numColumns, numRows;
     protected int cellWidth, cellHeight;
-    protected boolean winner = false;
+    protected boolean hasWinner = false;
     protected GameType gameType = GameType.STANDARD;
+    private GameMode gameMode = GameMode.OFFLINE;
     private Paint blackPaint = new Paint();
     private Paint whitePaint = new Paint();
     protected String[][] cellChecked;
-    private GameMode gameMode = GameMode.OFFLINE;
-
-
-    //Player 1 (WHITE) , if activePlayer = 0
-    //Player 2 (BLACK) , if activePlayer = 1
-    protected int activePlayer = 1;
+    private Player blackPlayer;
+    private Player whitePlayer;
+    protected Player activePlayer = blackPlayer;
 
     public Board(Context context) {
         this(context, null);
@@ -54,6 +53,18 @@ public class Board extends View {
     public void setGameMode(GameMode gameMode) {
         this.gameMode = gameMode;
         Log.i("INFO", "Game mode is set to " + this.gameMode);
+    }
+
+    public void setBlackPlayer(Player blackPlayer) {
+        this.blackPlayer = blackPlayer;
+    }
+
+    public void setWhitePlayer(Player whitePlayer) {
+        this.whitePlayer = whitePlayer;
+    }
+
+    public void setActivePlayer(Player activePlayer) {
+        this.activePlayer = activePlayer;
     }
 
     @Override
@@ -97,17 +108,34 @@ public class Board extends View {
         boolean whiteWins =  checkHorizontal("WHITE") || checkVertical("WHITE") ||
             checkLeftDiagonal("WHITE") || checkRightDiagonal("WHITE");
 
-        winner = blackWins || whiteWins;
-        if (winner) {
+        hasWinner = blackWins || whiteWins;
+        if (hasWinner) {
             ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_black)).pause();
             ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_white)).pause();
             String msg = (blackWins ? "Black" : "White") + " player wins!  Click BACK TO MENU.";
             TextView winnerMessage = (TextView) ((MainActivity) getContext()).findViewById(R.id.winner_message);
             winnerMessage.setText(msg);
             winnerMessage.setVisibility(View.VISIBLE);
+
+            SharedPreferences.Editor editor = ((MainActivity) getContext())
+                    .getPreferences(Context.MODE_PRIVATE).edit();
+            if (gameMode.equals(GameMode.AI)) {
+                if (blackWins) {    // human wins
+                    blackPlayer.incrementScore();
+                    editor.putInt(blackPlayer.getName(), blackPlayer.getScore());
+                    editor.commit();
+                }
+            } else if (gameMode.equals(GameMode.OFFLINE)) {
+                Player winner = blackWins ? blackPlayer : whitePlayer;
+                Player loser = blackWins ? whitePlayer : blackPlayer;
+                winner.incrementScore();
+                editor.putInt(winner.getName(), winner.getScore());
+                editor.putInt(loser.getName(), loser.getScore());
+                editor.commit();
+            }
         }
 
-        return winner;
+        return hasWinner;
     }
 
     //Check if the end is blocked
@@ -120,7 +148,7 @@ public class Board extends View {
     }
 
     //Find Winner by doing horizontal check.
-    //Return true if found a winner
+    //Return true if found a hasWinner
     private boolean checkHorizontal(String playerColor) {
         boolean isWinner = false;
         for (int row = 0; row < numRows; row++) {
@@ -375,7 +403,7 @@ public class Board extends View {
                 return false;
             }
 
-            if (winner)
+            if (hasWinner)
                 return false;
 
             //If position is already placed by other stone
@@ -394,19 +422,18 @@ public class Board extends View {
     }
 
     private void OfflineMode(int column, int row) {
-        //Alternate the stone color
-        if (activePlayer == 0) {
+        if (activePlayer.isWhite()) {
             cellChecked[column][row] = "WHITE";
-            activePlayer = 1;
+            activePlayer = blackPlayer;
             ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_white)).pause();
-            if (!winner) {
+            if (!hasWinner) {
                 ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_black)).start();
             }
         } else {
             cellChecked[column][row] = "BLACK";
-            activePlayer = 0;
+            activePlayer = whitePlayer;
             ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_black)).pause();
-            if (!winner) {
+            if (!hasWinner) {
                 ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_white)).start();
             }
         }
