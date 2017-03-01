@@ -11,53 +11,59 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="edu.pdx.cs.cs554.gomoku.MainActivity">
 
-    <edu.pdx.cs.cs554.gomoku.Board
-        android:id="@+id/board"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
-
-    <Space
-        android:id="@+id/space"
-        android:layout_width="1dp"
-        android:layout_height="10dp"
-        android:layout_below="@id/board" />
-
-    <edu.pdx.cs.cs554.gomoku.TimerView
-        android:id="@+id/timer_black"
-        android:text="BLACK PLAYER 10:00"
-        android:textColor="#FFFFFF"
-        android:background="#000000"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-      android:layout_below="@id/space" />
-
-    <edu.pdx.cs.cs554.gomoku.TimerView
-        android:id="@+id/timer_white"
-        android:text="WHITE PLAYER 10:00"
-        android:textColor="#000000"
-        android:background="#FFFFFF"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/timer_black" />
-
     <Button
-        android:text="BACK"
+        android:text="BACK TO MENU"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/play"
+        android:id="@+id/back"
         android:onClick="showMenu"
         android:textAppearance="@style/TextAppearance.AppCompat.Button"
         android:textColorLink="@android:color/black"
         android:textColorHighlight="@android:color/black"
-        android:layout_toRightOf="@+id/space"
-        android:layout_marginLeft="117dp"
-        android:layout_marginStart="117dp" />
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/winner_message"
+        android:text=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="@android:color/holo_red_dark"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/back"
+        android:visibility="invisible" />
+
+    <edu.pdx.cs.cs554.gomoku.Board
+        android:id="@+id/board"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/winner_message"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true" />
+
+    <edu.pdx.cs.cs554.gomoku.TimerView
+        android:id="@+id/timer_black"
+        android:text="BLACK PLAYER 10:00"
+        android:textColor="@android:color/white"
+        android:background="@android:color/black"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/board"
+        android:visibility="invisible" />
+
+    <edu.pdx.cs.cs554.gomoku.TimerView
+        android:id="@+id/timer_white"
+        android:text="WHITE PLAYER 10:00"
+        android:textColor="@android:color/black"
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/timer_black"
+        android:visibility="invisible" />
 <!--
     <Button
         android:text="RESET BOARD"
