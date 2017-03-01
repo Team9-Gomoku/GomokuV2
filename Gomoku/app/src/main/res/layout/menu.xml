@@ -74,6 +74,7 @@
             android:layout_marginLeft="40dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:checked="true"
+            android:onClick="showWhitePlayer"
             android:textColor="@android:color/black" />
 
         <RadioButton
@@ -83,6 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:layout_marginLeft="25dp"
+            android:onClick="hideWhitePlayer"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
         <RadioButton
@@ -92,6 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:layout_marginLeft="25dp"
+            android:onClick="hideWhitePlayer"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
     </RadioGroup>
 

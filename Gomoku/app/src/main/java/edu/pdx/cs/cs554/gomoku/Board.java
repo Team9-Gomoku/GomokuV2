@@ -115,6 +115,7 @@ public class Board extends View {
             String msg = (blackWins ? "Black" : "White") + " player wins!  Click BACK TO MENU.";
             TextView winnerMessage = (TextView) ((MainActivity) getContext()).findViewById(R.id.winner_message);
             winnerMessage.setText(msg);
+            winnerMessage.setBackgroundColor(Color.WHITE);
             winnerMessage.setVisibility(View.VISIBLE);
 
             SharedPreferences.Editor editor = ((MainActivity) getContext())

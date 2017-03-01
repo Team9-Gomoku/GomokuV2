@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -99,20 +100,37 @@ public class MainActivity extends AppCompatActivity {
         board.setWhitePlayer(new Player(whitePlayerName, whitePlayerScore, false));
         board.setActivePlayer(bp);
 
+        TimerView blackTimer = (TimerView) findViewById(R.id.timer_black);
+        blackTimer.setPrefix("BLACK PLAYER ");
+        blackTimer.setVisibility(View.VISIBLE);
+        blackTimer.start();
+
+        TimerView whiteTimer = (TimerView) findViewById(R.id.timer_white);
         if (!gameMode.equals(GameMode.AI)) {
-            TimerView blackTimer = (TimerView) findViewById(R.id.timer_black);
-            TimerView whiteTimer = (TimerView) findViewById(R.id.timer_white);
-            blackTimer.setPrefix("BLACK PLAYER ");
-            blackTimer.setVisibility(View.VISIBLE);
-            blackTimer.start();
+            whiteTimer.setPrefix("COMPUTER     ");
+        } else {
             whiteTimer.setPrefix("WHITE PLAYER ");
-            whiteTimer.setVisibility(View.VISIBLE);
         }
+        whiteTimer.setVisibility(View.VISIBLE);
     }
 
     public void showScores(View view) {
         setContentView(R.layout.activity_scores);
         GridView scores = (GridView) findViewById(R.id.scores);
         scores.setAdapter(new ScoreAdapter((Activity) scores.getContext()));
+    }
+
+    public void hideWhitePlayer(View view) {
+        EditText whitePlayerName = (EditText) findViewById(R.id.white_player);
+        TextView whitePlayerLabel = (TextView) findViewById(R.id.white_player_label);
+        whitePlayerName.setVisibility(View.INVISIBLE);
+        whitePlayerLabel.setVisibility(View.INVISIBLE);
+    }
+
+    public void showWhitePlayer(View view) {
+        EditText whitePlayerName = (EditText) findViewById(R.id.white_player);
+        TextView whitePlayerLabel = (TextView) findViewById(R.id.white_player_label);
+        whitePlayerName.setVisibility(View.VISIBLE);
+        whitePlayerLabel.setVisibility(View.VISIBLE);
     }
 }
