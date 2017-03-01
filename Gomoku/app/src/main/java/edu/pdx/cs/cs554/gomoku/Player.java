@@ -4,6 +4,7 @@ public class Player {
     private final String name;
     private int score;
     private final boolean isBlack;
+    private boolean scoreIncremented = false;
 
     public Player(String name, int score, boolean isBlack) {
         this.name = name;
@@ -24,7 +25,10 @@ public class Player {
     }
 
     public void incrementScore() {
-        score++;
+        if (!scoreIncremented) {
+            score++;
+        }
+        scoreIncremented = true;
     }
 
 }

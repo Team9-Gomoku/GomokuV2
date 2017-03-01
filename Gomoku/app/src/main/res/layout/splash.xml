@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background = "@drawable/bg"
+    android:onClick="showMenu"
     android:id="@+id/splash">
 
     <Button
@@ -17,7 +18,6 @@
         android:textColorLink="@android:color/black"
         android:textColorHint="@android:color/black"
         android:background="@android:color/transparent"
-        android:onClick="showMenu"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"

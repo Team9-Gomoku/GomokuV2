@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -95,8 +96,10 @@ public class MainActivity extends AppCompatActivity {
         int blackPlayerScore = sharedPref.getInt(blackPlayerName, 0);
         int whitePlayerScore = sharedPref.getInt(whitePlayerName, 0);
 
+        Log.i("INFO", "Creating black player with score: " + blackPlayerScore);
         Player bp = new Player(blackPlayerName, blackPlayerScore, true);
         board.setBlackPlayer(bp);
+        Log.i("INFO", "Creating white player with score: " + whitePlayerScore);
         board.setWhitePlayer(new Player(whitePlayerName, whitePlayerScore, false));
         board.setActivePlayer(bp);
 
