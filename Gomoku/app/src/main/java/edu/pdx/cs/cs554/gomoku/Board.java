@@ -24,6 +24,8 @@ public class Board extends View {
     private Player whitePlayer;
     protected Player activePlayer = blackPlayer;
 
+    public int numStonesPlaced = 0;
+
     public Board(Context context) {
         this(context, null);
     }
@@ -99,6 +101,22 @@ public class Board extends View {
             cellChecked[0][row] = "BLANK";
             cellChecked[numColumns-1][row] = "BLANK";
         }
+    }
+
+    //=========CHECK STALEMATE =========
+    private boolean checkStaleMate() {
+        int numStonesSlots = (numColumns-2) * (numRows-2);
+        if(numStonesPlaced == (numStonesSlots)) {
+            ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_black)).pause();
+            ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_white)).pause();
+            String msg = "Stalemate. It's a tie!";
+            TextView winnerMessage = (TextView) ((MainActivity) getContext()).findViewById(R.id.winner_message);
+            winnerMessage.setText(msg);
+            winnerMessage.setBackgroundColor(Color.WHITE);
+            winnerMessage.setVisibility(View.VISIBLE);
+            return true;
+        }
+        return false;
     }
 
     //=========CHECK WINNER=============
@@ -381,6 +399,7 @@ public class Board extends View {
         drawBoard(canvas);
         drawStone(canvas);
         findWinner();
+        checkStaleMate();
     }
 
 
@@ -417,6 +436,7 @@ public class Board extends View {
             } else if (gameMode.equals(GameMode.AI)) {
                 AIMode(column, row);
             }
+            Log.i("INFO", "NUMBER OF STONES PLACED: " + numStonesPlaced + "/" + (numRows-2)*(numColumns-2));
             invalidate();
         }
         return true;
@@ -439,6 +459,7 @@ public class Board extends View {
             }
         }
         Log.i("INFO", cellChecked[column][row] + ": "+ column + " , " + row);
+        numStonesPlaced++;
     }
 
 
@@ -456,6 +477,7 @@ public class Board extends View {
             return;
         }
         computerMove(column, row);
+        numStonesPlaced += 2;
     }
 
 
