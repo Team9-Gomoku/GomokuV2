@@ -73,11 +73,11 @@ public class MainActivity extends AppCompatActivity {
         RadioGroup boardSizeButtons = (RadioGroup) findViewById(R.id.board_size_buttons);
         switch (boardSizeButtons.getCheckedRadioButtonId()) {
             case R.id.ten:
-                return 11;
+                return 12;
             case R.id.fifteen:
-                return 16;
+                return 17;
             case R.id.twenty:
-                return 21;
+                return 22;
         }
         throw new IllegalStateException("This cannot happen!");
     }
