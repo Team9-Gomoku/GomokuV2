@@ -2,6 +2,7 @@ package edu.pdx.cs.cs554.gomoku;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -73,49 +74,57 @@ public class MainActivity extends AppCompatActivity {
         RadioGroup boardSizeButtons = (RadioGroup) findViewById(R.id.board_size_buttons);
         switch (boardSizeButtons.getCheckedRadioButtonId()) {
             case R.id.ten:
-                return 12;
+                return 11;
             case R.id.fifteen:
-                return 17;
+                return 16;
             case R.id.twenty:
-                return 22;
+                return 21;
         }
         throw new IllegalStateException("This cannot happen!");
     }
 
     private void startGame(GameType gameType, GameMode gameMode, int boardSize,
         String blackPlayerName, String whitePlayerName) {
-        setContentView(R.layout.activity_main);
 
-        Board board = (Board) findViewById(R.id.board);
-        board.setNumColumns(boardSize);
-        board.setNumRows(boardSize);
-        board.setGameType(gameType);
-        board.setGameMode(gameMode);
+        if(gameMode != GameMode.ONLINE) {
+            setContentView(R.layout.activity_main);
 
-        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-        int blackPlayerScore = sharedPref.getInt(blackPlayerName, 0);
-        int whitePlayerScore = sharedPref.getInt(whitePlayerName, 0);
+            Board board = (Board) findViewById(R.id.board);
+            board.setNumColumns(boardSize);
+            board.setNumRows(boardSize);
+            board.setGameType(gameType);
+            board.setGameMode(gameMode);
 
-        Log.i("INFO", "Creating black player with score: " + blackPlayerScore);
-        Player bp = new Player(blackPlayerName, blackPlayerScore, true);
-        board.setBlackPlayer(bp);
-        Log.i("INFO", "Creating white player with score: " + whitePlayerScore);
-        board.setWhitePlayer(new Player(whitePlayerName, whitePlayerScore, false));
-        board.setActivePlayer(bp);
+            SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+            int blackPlayerScore = sharedPref.getInt(blackPlayerName, 0);
+            int whitePlayerScore = sharedPref.getInt(whitePlayerName, 0);
 
-        TimerView blackTimer = (TimerView) findViewById(R.id.timer_black);
-        blackTimer.setPrefix("BLACK PLAYER ");
-        blackTimer.setVisibility(View.VISIBLE);
-        blackTimer.start();
+            Log.i("INFO", "Creating black player with score: " + blackPlayerScore);
+            Player bp = new Player(blackPlayerName, blackPlayerScore, true);
+            board.setBlackPlayer(bp);
+            Log.i("INFO", "Creating white player with score: " + whitePlayerScore);
+            board.setWhitePlayer(new Player(whitePlayerName, whitePlayerScore, false));
+            board.setActivePlayer(bp);
 
-        TimerView whiteTimer = (TimerView) findViewById(R.id.timer_white);
-        if (gameMode.equals(GameMode.AI)) {
-            whiteTimer.setPrefix("COMPUTER     ");
-            whiteTimer.setText(whiteTimer.getPrefix() + String.format("%02d:%02d", 10, 00));
-        } else {
-            whiteTimer.setPrefix("WHITE PLAYER ");
+            TimerView blackTimer = (TimerView) findViewById(R.id.timer_black);
+            blackTimer.setPrefix("BLACK PLAYER ");
+            blackTimer.setVisibility(View.VISIBLE);
+            blackTimer.start();
+
+            TimerView whiteTimer = (TimerView) findViewById(R.id.timer_white);
+            if (gameMode.equals(GameMode.AI)) {
+                whiteTimer.setPrefix("COMPUTER     ");
+                whiteTimer.setText(whiteTimer.getPrefix() + String.format("%02d:%02d", 10, 00));
+            } else {
+                whiteTimer.setPrefix("WHITE PLAYER ");
+            }
+            whiteTimer.setVisibility(View.VISIBLE);
         }
-        whiteTimer.setVisibility(View.VISIBLE);
+        else
+        {
+            Intent intent =new Intent(this, MainMenu.class);
+            startActivity(intent);
+        }
     }
 
     public void showScores(View view) {
