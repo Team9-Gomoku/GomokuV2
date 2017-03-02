@@ -109,8 +109,9 @@ public class MainActivity extends AppCompatActivity {
         blackTimer.start();
 
         TimerView whiteTimer = (TimerView) findViewById(R.id.timer_white);
-        if (!gameMode.equals(GameMode.AI)) {
+        if (gameMode.equals(GameMode.AI)) {
             whiteTimer.setPrefix("COMPUTER     ");
+            whiteTimer.setText(whiteTimer.getPrefix() + String.format("%02d:%02d", 10, 00));
         } else {
             whiteTimer.setPrefix("WHITE PLAYER ");
         }
