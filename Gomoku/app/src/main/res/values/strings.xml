@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">Gomoku</string>
+    <string name="app_name">GOMOKU</string>
+    <string name="title_paired_devices" />
+    <string name="title_other_devices" />
+    <string name="none_found" />
+    <string name="secure_connect" />
+    <string name="insecure_connect" />
+    <string name="discoverable" />
+    <string name="action_settings" />
+    <string name="title_activity_bluetooth">BluetoothActivity</string>
 </resources>
