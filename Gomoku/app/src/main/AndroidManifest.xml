@@ -2,10 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.pdx.cs.cs554.gomoku">
 
+    <permission
+        android:name="android.permission.BLUETOOTH"
+        android:label="BLUETOOTH" />
+    <permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="GOMOKU_MEL2"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
@@ -15,6 +23,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="edu.pdx.cs.cs554.gomoku.MainMenu"
+            android:label="online_menu"></activity>
+
+        <activity android:name="edu.pdx.cs.cs554.gomoku.GameActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.DISPLAY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="edu.pdx.cs.cs554.gomoku.BluetoothActivity"
+            android:label="@string/title_activity_bluetooth"></activity>
+        <activity
+            android:name="edu.pdx.cs.cs554.gomoku.BT_host"
+            android:label="@string/title_activity_bluetooth"></activity>
+        <activity
+            android:name="edu.pdx.cs.cs554.gomoku.BT_DeviceListActivity"
+            android:label="@string/title_activity_bluetooth"></activity>
+        <activity
+            android:name="edu.pdx.cs.cs554.gomoku.BT_guest"
+            android:label="@string/title_activity_bluetooth"></activity>
     </application>
 
 </manifest>
