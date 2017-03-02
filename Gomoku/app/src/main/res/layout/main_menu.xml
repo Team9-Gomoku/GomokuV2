@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/wood"
+    android:clickable="false"
+    android:contextClickable="false">
+
+    <Button
+
+        android:id="@+id/bOffline"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:textColor="#000000"
+        android:layout_width="90pt"
+        android:layout_height="25pt"
+        android:typeface="serif"
+        android:layout_above="@+id/bOnline"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/transparent" />
+
+    <Button
+
+        android:text="Online Mode"
+        android:id="@+id/bOnline"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:textColor="#000000"
+        android:layout_width="90pt"
+        android:layout_height="25pt"
+        android:typeface="serif"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/bOffline"
+        android:layout_alignStart="@+id/bOffline" />
+
+    <Button
+
+        android:id="@+id/bAi"
+        android:layout_width="90pt"
+        android:layout_height="25pt"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:textColor="#000000"
+
+        android:typeface="serif"
+        android:layout_below="@+id/bOnline"
+        android:layout_alignRight="@+id/bOnline"
+        android:layout_alignEnd="@+id/bOnline"
+        android:background="@android:color/transparent" />
+
+    <RadioGroup
+        android:layout_below="@+id/bAi"
+        android:layout_centerHorizontal="true"
+        android:layout_width="200pt"
+        android:layout_height="90pt"
+        android:orientation="horizontal">
+    <RadioButton
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:id="@+id/freestyle"
+        android:singleLine="false"
+        android:nestedScrollingEnabled="true"
+        android:layout_centerHorizontal="true"
+        android:allowUndo="true"
+        android:background="#91ffffff"
+        android:button="@android:color/transparent" />
+
+    <RadioButton
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:id="@+id/standard"
+        android:singleLine="false"
+        android:nestedScrollingEnabled="true"
+        android:layout_centerHorizontal="true"
+        android:allowUndo="true"
+        android:checked="true"
+        android:background="#91ffffff"
+        android:button="@android:color/transparent" />
+    </RadioGroup>
+
+</RelativeLayout>
