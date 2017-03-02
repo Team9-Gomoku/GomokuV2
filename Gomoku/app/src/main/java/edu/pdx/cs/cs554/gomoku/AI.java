@@ -29,16 +29,256 @@ public class AI {
         if (cellToPlace != null) {
             Log.i("INFO", "THREAT STEP DETECTED");
             cellChecked[cellToPlace[0]][cellToPlace[1]] = "WHITE";
-        } else if (cellToPlace == null) {
+            return;
+        }
+
+        cellToPlace = createWinningStep("WHITE");
+        if (cellToPlace != null) {
+            Log.i("INFO", "THREAT STEP DETECTED");
+            cellChecked[cellToPlace[0]][cellToPlace[1]] = "WHITE";
+            return;
+        }
+
+
+        if (cellToPlace == null) {
             cellToPlace = NoThreatMove(column, row);
             cellChecked[cellToPlace[0]][cellToPlace[1]] = "WHITE";
         }
 
-
-
-
-
     }
+
+    private int [] createWinningStep(String playerColor) {
+        int computerMove[];
+        computerMove = createWinningStepHorizontal(playerColor);
+
+        if(computerMove == null)
+            computerMove = createWinningStepVerticle(playerColor);
+
+        if(computerMove == null)
+            computerMove = createWinningStepRightDiagonal(playerColor);
+
+        if(computerMove == null)
+            computerMove = createWinningStepLeftDiagonal(playerColor);
+
+        return computerMove;
+    }
+
+    private int[] createWinningStepHorizontal(String playerColor) {
+        for (int row = 0; row < numRows; row++) {
+            int score = 0;
+            for (int column = 0; column < numColumns; column++) {
+
+                if (cellChecked[column][row] == playerColor && score < 4) {
+                    score++;
+
+
+                    if (score == 2) {
+                        // O O _ O _ -> O O O O _  || _ O O _ O -> _ O O O O
+                        // O _ O O _ -> O O O O _  || _ O _ O O -> _ O O O O
+                        if (isNotBlockedEnd(column + 1, row, null) &&
+                                isNotBlockedEnd(column + 2, row, playerColor) &&
+                                (isNotBlockedEnd(column + 3, row, null) ||
+                                isNotBlockedEnd(column - 2, row, null))) {
+                            return new int[] {column + 1, row};
+                        } else if (isNotBlockedEnd(column - 2, row, null) &&
+                                isNotBlockedEnd(column - 3, row, playerColor) &&
+                                (isNotBlockedEnd(column + 1, row, null) ||
+                                isNotBlockedEnd(column - 4, row, null))) {
+                            return new int[] {column - 2, row};
+                        }
+                    }
+
+                    if (score == 3) {
+                        // _ O O O _  -> O O O O O _
+                        // O O O _ _ -> O O O O _
+                        // _ _ O O O-> _ O O O O
+                        if (isNotBlockedEnd(column + 1, row, null) &&
+                                isNotBlockedEnd(column - 3, row, null)) {
+                            return new int[] {column + 1, row};
+                        } else if (isNotBlockedEnd(column + 1, row, null) &&
+                                isNotBlockedEnd(column + 2, row, null)) {
+                            return new int[] {column + 1, row};
+                        } else if (isNotBlockedEnd(column - 3, row, null) &&
+                                isNotBlockedEnd(column - 4, row, null)) {
+                            return new int[] {column - 3, row};
+                        }
+                    }
+                } else {
+                    score = 0;
+                }
+            }
+        }
+        return null;
+    }
+
+    private int[] createWinningStepVerticle(String playerColor) {
+        for (int column = 0; column < numColumns; column++) {
+            int score = 0;
+            for (int row = 0; row < numRows; row++) {
+
+                if (cellChecked[column][row] == playerColor && score < 4) {
+                    score++;
+
+
+                    if (score == 2) {
+                        // O O _ O _ -> O O O O _  || _ O O _ O -> _ O O O O
+                        // O _ O O _ -> O O O O _  || _ O _ O O -> _ O O O O
+                        if (isNotBlockedEnd(column, row + 1, null) &&
+                                isNotBlockedEnd(column, row + 2, playerColor) &&
+                                (isNotBlockedEnd(column, row + 3, null) ||
+                                        isNotBlockedEnd(column, row - 2, null))) {
+                            return new int[] {column, row + 1};
+                        } else if (isNotBlockedEnd(column, row - 2, null) &&
+                                isNotBlockedEnd(column, row - 3, playerColor) &&
+                                (isNotBlockedEnd(column, row + 1, null) ||
+                                        isNotBlockedEnd(column, row - 4, null))) {
+                            return new int[] {column, row - 2};
+                        }
+                    }
+
+                    if (score == 3) {
+                        // _ O O O _  -> O O O O O _
+                        // O O O _ _ -> O O O O _
+                        // _ _ O O O-> _ O O O O
+                        if (isNotBlockedEnd(column, row + 1, null) &&
+                                isNotBlockedEnd(column, row - 3, null)) {
+                            return new int[] {column, row + 1};
+                        } else if (isNotBlockedEnd(column, row + 1, null) &&
+                                isNotBlockedEnd(column, row + 2, null)) {
+                            return new int[] {column, row + 1};
+                        } else if (isNotBlockedEnd(column, row - 3, null) &&
+                                isNotBlockedEnd(column, row - 4, null)) {
+                            return new int[] {column, row - 3};
+                        }
+                    }
+                } else {
+                    score = 0;
+                }
+            }
+        }
+        return null;
+    }
+
+    private int[] createWinningStepRightDiagonal(String playerColor) {
+        for( int k = 0 ; k < numColumns * 2 ; k++ ) {
+            int score = 0;
+            for( int column = 0 ; column <= k ; column++ ) {
+                int row = k - column;
+                if ( row < numColumns && column < numColumns ) {
+                    //cellChecked[column][row] = "BLACK";
+                    if (cellChecked[column][row] == playerColor && score < 5) {
+                        score++;
+
+                        if (score == 2) {
+                            // O O _ O _ -> O O O O _  || _ O O _ O -> _ O O O O
+                            // O _ O O _ -> O O O O _  || _ O _ O O -> _ O O O O
+                            if (isNotBlockedEnd(column + 1, row - 1, null) &&
+                                    isNotBlockedEnd(column + 2, row - 2, playerColor) &&
+                                    (isNotBlockedEnd(column + 3, row - 3, null) ||
+                                            isNotBlockedEnd(column - 2, row + 2, null))) {
+                                return new int[] {column + 1, row - 1};
+                            } else if (isNotBlockedEnd(column - 2, row + 2, null) &&
+                                    isNotBlockedEnd(column - 3, row + 3, playerColor) &&
+                                    (isNotBlockedEnd(column + 1, row - 1, null) ||
+                                            isNotBlockedEnd(column - 4, row + 4, null))) {
+                                return new int[] {column - 2, row + 2};
+                            }
+                        }
+
+                        if (score == 3) {
+                            // _ O O O _  -> O O O O O _
+                            // O O O _ _ -> O O O O _
+                            // _ _ O O O-> _ O O O O
+                            if (isNotBlockedEnd(column + 1, row - 1, null) &&
+                                    isNotBlockedEnd(column - 3, row + 3, null)) {
+                                return new int[] {column + 1, row - 1};
+                            } else if (isNotBlockedEnd(column + 1, row - 1, null) &&
+                                    isNotBlockedEnd(column + 2, row - 2, null)) {
+                                return new int[] {column + 1, row - 1};
+                            } else if (isNotBlockedEnd(column - 3, row + 3, null) &&
+                                    isNotBlockedEnd(column - 4, row + 4, null)) {
+                                return new int[] {column - 3, row + 3};
+                            }
+                        }
+
+                    } else {
+                        score = 0;
+                    }
+                    //Log.i("INFO", column + "," +  row);
+                }
+            }
+            score = 0;
+            //Log.i("INFO", "SCORE: " + score);
+        }
+        return null;
+    }
+
+    private int[] createWinningStepLeftDiagonal(String playerColor) {
+        int score = 0;
+
+        //number of reverse diagonal
+        int k = numRows + numColumns - 1;
+        int row = numRows - k;
+        for(int i =numRows-1; i>=row; i--) {
+            int tmpRow = i;
+            int tmpCol= 0;
+            while(tmpRow<numRows && tmpCol<numColumns) {
+                if (tmpRow<0) {
+                    tmpCol++;
+                    tmpRow++;
+                    continue;
+                } else {
+                    if (cellChecked[tmpCol][tmpRow] == playerColor && score < 5) {
+                        score++;
+
+                        if (score == 2) {
+                            // O O _ O _ -> O O O O _  || _ O O _ O -> _ O O O O
+                            // O _ O O _ -> O O O O _  || _ O _ O O -> _ O O O O
+                            if (isNotBlockedEnd(tmpCol + 1, tmpRow + 1, null) &&
+                                    isNotBlockedEnd(tmpCol + 2, tmpRow + 2, playerColor) &&
+                                    (isNotBlockedEnd(tmpCol + 3, tmpRow + 3, null) ||
+                                            isNotBlockedEnd(tmpCol - 2, tmpRow - 2, null))) {
+                                return new int[] {tmpCol + 1, tmpRow + 1};
+                            } else if (isNotBlockedEnd(tmpCol - 2, tmpRow - 2, null) &&
+                                    isNotBlockedEnd(tmpCol - 3, tmpRow - 3, playerColor) &&
+                                    (isNotBlockedEnd(tmpCol + 1, tmpRow + 1, null) ||
+                                            isNotBlockedEnd(tmpCol - 4, tmpRow - 4, null))) {
+                                return new int[] {tmpCol - 2, row - 2};
+                            }
+                        }
+
+                        if (score == 3) {
+                            // _ O O O _  -> O O O O O _
+                            // O O O _ _ -> O O O O _
+                            // _ _ O O O-> _ O O O O
+                            if (isNotBlockedEnd(tmpCol + 1, tmpRow + 1, null) &&
+                                    isNotBlockedEnd(tmpCol - 3, tmpRow - 3, null)) {
+                                return new int[] {tmpCol + 1, tmpRow + 1};
+                            } else if (isNotBlockedEnd(tmpCol + 1, tmpRow + 1, null) &&
+                                    isNotBlockedEnd(tmpCol + 2, tmpRow + 2, null)) {
+                                return new int[] {tmpCol + 1, tmpRow + 1};
+                            } else if (isNotBlockedEnd(tmpCol - 3, tmpRow - 3, null) &&
+                                    isNotBlockedEnd(tmpCol - 4, tmpRow - 4, null)) {
+                                return new int[] {tmpCol - 3, tmpRow - 3};
+                            }
+                        }
+                    } else {
+                        score = 0;
+                    }
+                    tmpCol++;
+                    tmpRow++;
+
+                }
+            }
+            score = 0;
+        }
+        return null;
+    }
+
+
+
+
+
 
     //Check if the end is blocked
     private boolean isNotBlockedEnd(int column, int row, String playerColor) {
