@@ -1,6 +1,7 @@
 package edu.pdx.cs.cs554.gomoku;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.CountDownTimer;
 import android.util.AttributeSet;
 import android.widget.TextView;
@@ -72,8 +73,21 @@ public class TimerView extends TextView {
             TimerView.this.setText(prefix + "00:00");
             if (oneMinutePerRoundMode) {
                 String msg = prefix + "has timed out!  Click BACK TO MENU.";
-                ((Board) ((MainActivity) getContext()).findViewById(R.id.board)).showWinningMessage(msg);
-                // TODO scoring
+                Board board = ((Board) ((MainActivity) getContext()).findViewById(R.id.board));
+                board.showWinningMessage(msg);
+                if (board.getGameMode().equals(GameMode.OFFLINE)) {
+                    SharedPreferences.Editor editor = ((MainActivity) getContext())
+                            .getPreferences(Context.MODE_PRIVATE).edit();
+                    Player winner;
+                    if (TimerView.this.equals(board.getBlackPlayer())) {
+                        winner = board.getBlackPlayer();
+                    } else {
+                        winner = board.getWhitePlayer();
+                    }
+                    winner.incrementScore();
+                    editor.putInt(winner.getName(), winner.getScore());
+                    editor.commit();
+                }
             } else {
                 oneMinutePerRoundMode = true;
                 TimerView.this.start();

@@ -22,7 +22,7 @@ public class Board extends View {
     public static String[][] cellChecked;
     private Player blackPlayer;
     private Player whitePlayer;
-    protected Player activePlayer = blackPlayer;
+    private Player activePlayer = blackPlayer;
     private AI AIMode;
 
     public int numStonesPlaced = 0;
@@ -53,6 +53,10 @@ public class Board extends View {
         Log.i("INFO", "Game type is set to " + this.gameType);
     }
 
+    public GameMode getGameMode() {
+        return gameMode;
+    }
+
     public void setGameMode(GameMode gameMode) {
         this.gameMode = gameMode;
         Log.i("INFO", "Game mode is set to " + this.gameMode);
@@ -64,8 +68,16 @@ public class Board extends View {
         }
     }
 
+    public Player getBlackPlayer() {
+        return this.blackPlayer;
+    }
+
     public void setBlackPlayer(Player blackPlayer) {
         this.blackPlayer = blackPlayer;
+    }
+
+    public Player getWhitePlayer() {
+        return this.whitePlayer;
     }
 
     public void setWhitePlayer(Player whitePlayer) {
