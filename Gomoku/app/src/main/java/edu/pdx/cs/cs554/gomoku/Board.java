@@ -117,10 +117,7 @@ public class Board extends View {
             ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_black)).pause();
             ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_white)).pause();
             String msg = "Stalemate. It's a tie!";
-            TextView winnerMessage = (TextView) ((MainActivity) getContext()).findViewById(R.id.winner_message);
-            winnerMessage.setText(msg);
-            winnerMessage.setBackgroundColor(Color.WHITE);
-            winnerMessage.setVisibility(View.VISIBLE);
+            showWinningMessage(msg);
             return true;
         }
         return false;
@@ -137,12 +134,9 @@ public class Board extends View {
         if (hasWinner) {
             ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_black)).pause();
             ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_white)).pause();
-            String msg = (blackWins ? "Black" : "White") + " player wins!  Click BACK TO MENU.";
-            TextView winnerMessage = (TextView) ((MainActivity) getContext()).findViewById(R.id.winner_message);
-            winnerMessage.setText(msg);
-            winnerMessage.setBackgroundColor(Color.WHITE);
-            winnerMessage.setVisibility(View.VISIBLE);
 
+            String msg = (blackWins ? "Black" : "White") + " player wins!  Click BACK TO MENU.";
+            showWinningMessage(msg);
             SharedPreferences.Editor editor = ((MainActivity) getContext())
                     .getPreferences(Context.MODE_PRIVATE).edit();
             if (gameMode.equals(GameMode.AI)) {
@@ -162,6 +156,13 @@ public class Board extends View {
         }
 
         return hasWinner;
+    }
+
+    void showWinningMessage(String msg) {
+        TextView winnerMessage = (TextView) ((MainActivity) getContext()).findViewById(R.id.winner_message);
+        winnerMessage.setText(msg);
+        winnerMessage.setBackgroundColor(Color.WHITE);
+        winnerMessage.setVisibility(View.VISIBLE);
     }
 
     //Check if the end is blocked

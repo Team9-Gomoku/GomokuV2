@@ -5,9 +5,10 @@ import android.os.CountDownTimer;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-public class TimerView extends TextView {
+import static edu.pdx.cs.cs554.gomoku.Constants.ONE_MINUTE_IN_MILLISECONDS;
+import static edu.pdx.cs.cs554.gomoku.Constants.PLAYER_TIME_LIMIT_IN_MILLISECONDS;
 
-    private static final int PLAYER_TIME_LIMIT_IN_MILLISECONDS = 10 * 60 * 1000;    // 10 minutes
+public class TimerView extends TextView {
 
     private String prefix;
 
@@ -15,11 +16,17 @@ public class TimerView extends TextView {
 
     private long remainingMilliseconds = PLAYER_TIME_LIMIT_IN_MILLISECONDS + 1;
 
+    private boolean oneMinutePerRoundMode = false;
+
     public TimerView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
     public void start() {
+        if (oneMinutePerRoundMode) {
+            remainingMilliseconds = ONE_MINUTE_IN_MILLISECONDS;
+            playerTimer = null;
+        }
         if (playerTimer == null) {
             playerTimer = new PlayerTimer(remainingMilliseconds, 1000);
         }
@@ -57,12 +64,20 @@ public class TimerView extends TextView {
             }
             long minutes = millisUntilFinished / 1000 / 60;
             long seconds = millisUntilFinished / 1000 % 60;
-            TimerView.this.setText(TimerView.this.getPrefix() + String.format("%02d:%02d", minutes, seconds));
+            TimerView.this.setText(prefix + String.format("%02d:%02d", minutes, seconds));
         }
 
         @Override
         public void onFinish() {
-            TimerView.this.setText(TimerView.this.getPrefix() + "00:00");
+            TimerView.this.setText(prefix + "00:00");
+            if (oneMinutePerRoundMode) {
+                String msg = prefix + "has timed out!  Click BACK TO MENU.";
+                ((Board) ((MainActivity) getContext()).findViewById(R.id.board)).showWinningMessage(msg);
+                // TODO scoring
+            } else {
+                oneMinutePerRoundMode = true;
+                TimerView.this.start();
+            }
         }
 
         public void stop() {
