@@ -28,4 +28,7 @@ public interface Constants {
     // Key names received from the BluetoothChatService Handler
     public static final String DEVICE_NAME = "device_name";
     public static final String TOAST = "toast";
+
+    public static final int PLAYER_TIME_LIMIT_IN_MILLISECONDS = 5 * 1000;    // TODO 10 minutes
+    public static final int ONE_MINUTE_IN_MILLISECONDS = 5 * 1000;    // TODO 1 minutes
 }

@@ -22,7 +22,7 @@ public class Board extends View {
     public static String[][] cellChecked;
     private Player blackPlayer;
     private Player whitePlayer;
-    protected Player activePlayer = blackPlayer;
+    private Player activePlayer = blackPlayer;
     private AI AIMode;
 
     public int numStonesPlaced = 0;
@@ -53,6 +53,10 @@ public class Board extends View {
         Log.i("INFO", "Game type is set to " + this.gameType);
     }
 
+    public GameMode getGameMode() {
+        return gameMode;
+    }
+
     public void setGameMode(GameMode gameMode) {
         this.gameMode = gameMode;
         Log.i("INFO", "Game mode is set to " + this.gameMode);
@@ -64,8 +68,16 @@ public class Board extends View {
         }
     }
 
+    public Player getBlackPlayer() {
+        return this.blackPlayer;
+    }
+
     public void setBlackPlayer(Player blackPlayer) {
         this.blackPlayer = blackPlayer;
+    }
+
+    public Player getWhitePlayer() {
+        return this.whitePlayer;
     }
 
     public void setWhitePlayer(Player whitePlayer) {
@@ -117,10 +129,7 @@ public class Board extends View {
             ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_black)).pause();
             ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_white)).pause();
             String msg = "Stalemate. It's a tie!";
-            TextView winnerMessage = (TextView) ((MainActivity) getContext()).findViewById(R.id.winner_message);
-            winnerMessage.setText(msg);
-            winnerMessage.setBackgroundColor(Color.WHITE);
-            winnerMessage.setVisibility(View.VISIBLE);
+            showWinningMessage(msg);
             return true;
         }
         return false;
@@ -137,12 +146,9 @@ public class Board extends View {
         if (hasWinner) {
             ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_black)).pause();
             ((TimerView) ((MainActivity) getContext()).findViewById(R.id.timer_white)).pause();
-            String msg = (blackWins ? "Black" : "White") + " player wins!  Click BACK TO MENU.";
-            TextView winnerMessage = (TextView) ((MainActivity) getContext()).findViewById(R.id.winner_message);
-            winnerMessage.setText(msg);
-            winnerMessage.setBackgroundColor(Color.WHITE);
-            winnerMessage.setVisibility(View.VISIBLE);
 
+            String msg = (blackWins ? "Black" : "White") + " player wins!  Click BACK TO MENU.";
+            showWinningMessage(msg);
             SharedPreferences.Editor editor = ((MainActivity) getContext())
                     .getPreferences(Context.MODE_PRIVATE).edit();
             if (gameMode.equals(GameMode.AI)) {
@@ -162,6 +168,13 @@ public class Board extends View {
         }
 
         return hasWinner;
+    }
+
+    void showWinningMessage(String msg) {
+        TextView winnerMessage = (TextView) ((MainActivity) getContext()).findViewById(R.id.winner_message);
+        winnerMessage.setText(msg);
+        winnerMessage.setBackgroundColor(Color.WHITE);
+        winnerMessage.setVisibility(View.VISIBLE);
     }
 
     //Check if the end is blocked
