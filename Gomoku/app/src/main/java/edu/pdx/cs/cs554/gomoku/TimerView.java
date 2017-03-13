@@ -79,10 +79,10 @@ public class TimerView extends TextView {
                     SharedPreferences.Editor editor = ((MainActivity) getContext())
                             .getPreferences(Context.MODE_PRIVATE).edit();
                     Player winner;
-                    if (TimerView.this.equals(board.getBlackPlayer())) {
-                        winner = board.getBlackPlayer();
-                    } else {
+                    if (TimerView.this.prefix.startsWith("BLACK")) {
                         winner = board.getWhitePlayer();
+                    } else {
+                        winner = board.getBlackPlayer();
                     }
                     winner.incrementScore();
                     editor.putInt(winner.getName(), winner.getScore());
