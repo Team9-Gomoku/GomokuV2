@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.drawable.Drawable;
 import android.os.SystemClock;
 import android.view.MotionEvent;
 import android.widget.Chronometer;
@@ -45,8 +46,7 @@ public class GameView extends RelativeLayout{
         if (background != null) {
             background.recycle();
         }
-
-        this.mode = mode; //Used to determine if this is an AI game or player vs player (1 = AI, 0 = player vs player)
+            this.mode = mode; //Used to determine if this is an AI game or player vs player (1 = AI, 0 = player vs player)
         screenWidth = screenSizeX;
         background = BitmapFactory.decodeResource(getResources(), R.drawable.wood);
         background.setHasAlpha(false);

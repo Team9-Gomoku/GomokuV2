@@ -247,9 +247,11 @@ public class BT_host extends Activity {
         this.mode = BluetoothActivity.freestyle;
 //        Toast.makeText(context, "freestyle= " + mode, Toast.LENGTH_SHORT).show();
         sa = new GameView(this, boardSize, screenSizeX, 0);
-       // sa.setBackgroundColor(Color.argb(255, 255, 250, 250));
-        sa.setBackgroundColor(Color.TRANSPARENT);
+        sa.setBackgroundResource(R.drawable.wood);
+     //   sa.setBackgroundColor(Color.TRANSPARENT);
         setContentView(sa);
+
+
         game = new GameController(boardSize, screenSizeX, mode);
         // send message (the size of board) to guest to start game on guest
         //    The format is: "[game_start] size"
@@ -297,7 +299,8 @@ public class BT_host extends Activity {
 
                 sa.updateScore(blackScore, whiteScore);
                 final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage(game.getCurrentPlayerColor() + " won! Rematch?")
+               // builder.setMessage(game.getCurrentPlayerColor() + " won! Rematch?")
+                builder.setMessage( "Black Player won! Rematch?")
                         .setNegativeButton("NO", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 finish();
@@ -332,7 +335,7 @@ public class BT_host extends Activity {
 
 
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(game.getCurrentPlayerColor() + " won! Rematch?")
+            builder.setMessage("Black Player won! Rematch?")
                     .setNegativeButton("NO", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             finish();
@@ -431,7 +434,8 @@ public class BT_host extends Activity {
                             sa.updateScore(blackScore, whiteScore);
 
                             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                            builder.setMessage(game.getCurrentPlayerColor() + " won! Rematch?")
+                           // builder.setMessage(game.getCurrentPlayerColor() + " won! Rematch?")
+                            builder.setMessage( "Black Player won! Rematch?")
                                     .setNegativeButton("NO", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
                                             finish();
