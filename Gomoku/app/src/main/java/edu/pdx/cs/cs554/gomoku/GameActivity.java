@@ -44,7 +44,9 @@ public class GameActivity extends Activity {
         this.freestyle = MainMenu.freestyle;
         Toast.makeText(getApplicationContext(), "game activity freestyle= " + MainMenu.freestyle, Toast.LENGTH_SHORT).show();
         sa = new GameView(this, boardSize, screenSizeX, 0);
-        sa.setBackgroundColor(Color.argb(255, 255, 250, 250));
+        sa.setBackgroundResource(R.drawable.wood);
+        sa.setBackgroundColor(Color.TRANSPARENT);
+
         //RelativeLayout layout = new RelativeLayout(this);
         //layout.addView(sa);
         //layout.addView(sa.timeElapsed);
