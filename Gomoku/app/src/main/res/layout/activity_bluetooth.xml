@@ -57,7 +57,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:checked="true"
             android:textColor="@android:color/black"
-            android:visibility="invisible"/>
+            />
 
         <RadioButton
             android:id="@+id/freestyle1"
@@ -68,7 +68,7 @@
             android:layout_marginLeft="35dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textColor="@android:color/black"
-            android:visibility="invisible"/>
+            />
 
     </RadioGroup>
 
